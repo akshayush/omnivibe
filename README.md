@@ -1,4 +1,6 @@
-# Fullstack Starter (Node UI + Python Backend)
+# Omnivibe
+
+## Full-stack website (Node UI + Python backend)
 
 This project keeps frontend and backend in separate folders:
 
