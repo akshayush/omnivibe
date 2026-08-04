@@ -26,13 +26,13 @@ sudo apt-get install ffmpeg
 
 ```bash
 python generate.py --topic "Why the sky looks blue" --audience "high school students"
-python render.py output/why-the-sky-looks-blue/project.json
+python render.py "../Insta reels/why-the-sky-looks-blue/project.json"
 ```
 
 This creates:
 
 ```text
-output/why-the-sky-looks-blue/
+Insta reels/why-the-sky-looks-blue/
 ├── caption.txt
 ├── project.json       # edit scene titles, text, and duration here
 └── reel.mp4
@@ -51,7 +51,7 @@ Instagram publishing is supported only for a Professional account (Business or C
 ```bash
 python publish.py \
   --video-url "https://media.example.com/why-the-sky-looks-blue.mp4" \
-  --caption-file output/why-the-sky-looks-blue/caption.txt
+  --caption-file "../Insta reels/why-the-sky-looks-blue/caption.txt"
 ```
 
 `publish.py` creates a Reel container, waits for Meta to process it, then publishes it. It does not use browser automation, passwords, or private Instagram endpoints.

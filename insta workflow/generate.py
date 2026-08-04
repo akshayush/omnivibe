@@ -46,7 +46,12 @@ def main() -> None:
     parser.add_argument("--topic", required=True, help="Lesson subject, e.g. 'Newton's third law'")
     parser.add_argument("--audience", default="beginners", help="Audience label for the opening card")
     parser.add_argument("--duration", type=int, default=30, help="Approximate duration in seconds (minimum 15)")
-    parser.add_argument("--output", default="output", help="Directory for generated project packages")
+    default_output = Path(__file__).resolve().parent.parent / "Insta reels"
+    parser.add_argument(
+        "--output",
+        default=default_output,
+        help="Directory for generated project packages (defaults to the repository's Insta reels folder)",
+    )
     args = parser.parse_args()
 
     if args.duration < 15:
