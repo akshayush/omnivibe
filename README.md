@@ -58,6 +58,17 @@ For providers that require implicit TLS on port 465, also set `SMTP_USE_SSL=true
 
 The password value is intentionally not stored in this repository or exposed by the application.
 
+## Daily blog publishing
+
+The OMNIVIBE Daily Journal is published from Markdown files in `frontend/src/content/blog/`.
+
+1. Copy `POST_TEMPLATE.md` and name the new file `YYYY-MM-DD-your-post-slug.post.md`.
+2. Fill in the title, date, excerpt, and reading time in the frontmatter.
+3. Write the post body in Markdown.
+4. Commit and merge the post into `main`. Vercel builds and publishes it automatically.
+
+Only files ending in `.post.md` are published. `POST_TEMPLATE.md` is a writing reference and is not shown on the site.
+
 ## Local dev (separate processes)
 
 Backend:

@@ -1,8 +1,11 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { blogPosts, displayDate } from "./blogPosts";
 
 export default function App() {
   const [formStatus, setFormStatus] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   async function submitInquiry(event) {
     event.preventDefault();
@@ -44,6 +47,7 @@ export default function App() {
           </button>
           <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Main navigation">
             <a href="#learn" onClick={() => setMenuOpen(false)}>Learning</a>
+            <a href="#journal" onClick={() => setMenuOpen(false)}>Daily journal</a>
             <a href="#services" onClick={() => setMenuOpen(false)}>For teams</a>
             <a href="#program" onClick={() => setMenuOpen(false)}>Program</a>
           </nav>
@@ -146,6 +150,37 @@ export default function App() {
           {["Open source", "Newsletter", "LinkedIn", "Video", "Short-form", "Workshops"].map((channel) => <span key={channel}>{channel}</span>)}
         </div>
       </section>
+
+      <section className="section journal-section" id="journal">
+        <div className="container">
+          <p className="eyebrow">The Omnivibe daily journal</p>
+          <h2>One useful AI idea, every day.</h2>
+          <p className="section-intro">Short notes for curious learners and builders. Read the latest idea now, then return for tomorrow’s.</p>
+          <div className="journal-grid">
+            {blogPosts.map((post) => (
+              <article className="journal-card" key={post.slug}>
+                <p className="journal-meta">{displayDate(post.date)} · {post.readTime}</p>
+                <h3>{post.title}</h3>
+                <p>{post.excerpt}</p>
+                <button className="text-link journal-open" type="button" onClick={() => setSelectedPost(post)}>
+                  Read the note <span>→</span>
+                </button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {selectedPost && (
+        <div className="post-overlay" role="dialog" aria-modal="true" aria-label={selectedPost.title}>
+          <article className="post-reader">
+            <button className="post-close" type="button" onClick={() => setSelectedPost(null)} aria-label="Close article">×</button>
+            <p className="journal-meta">{displayDate(selectedPost.date)} · {selectedPost.readTime}</p>
+            <h2>{selectedPost.title}</h2>
+            <ReactMarkdown>{selectedPost.body}</ReactMarkdown>
+          </article>
+        </div>
+      )}
 
       <section className="section contact-section" id="contact">
         <div className="container contact-grid">
