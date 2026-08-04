@@ -25,6 +25,20 @@ docker run --rm -p 8000:8000 forgewithai-app
 
 Open: `http://localhost:8000`
 
+## Enquiry email delivery
+
+The contact form sends each enquiry to `akshayush007@gmail.com`. Configure these environment variables in Vercel (or your container host); never commit the SMTP password:
+
+```bash
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USERNAME=your-smtp-username
+SMTP_PASSWORD=your-smtp-password-or-app-password
+SMTP_FROM=sender@example.com
+```
+
+For providers that require implicit TLS on port 465, also set `SMTP_USE_SSL=true`. Otherwise the application uses STARTTLS. All delivered email subjects begin with `OMNIVIBE ENQUIRY`.
+
 ## Local dev (separate processes)
 
 Backend:
