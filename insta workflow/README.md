@@ -5,7 +5,7 @@ This standalone workflow creates short vertical lesson videos, gives each video 
 ## What it does
 
 - Generates an editable five-card teaching script from a topic.
-- Renders the cards to a 1080×1920 MP4 using `ffmpeg`.
+- Renders a narrated, classroom-style 1080×1920 MP4 using `ffmpeg`'s local text-to-speech support.
 - Produces an Instagram caption alongside the project.
 - Publishes a hosted MP4 as a Reel only after you explicitly run the publish command.
 
@@ -38,7 +38,7 @@ Insta reels/why-the-sky-looks-blue/
 └── reel.mp4
 ```
 
-Review `reel.mp4` before sharing it. The renderer creates visual text cards; add your own approved narration, music, or footage in your preferred editor if required.
+Review `reel.mp4` before sharing it. The renderer uses a friendly illustrated teacher and a local synthesized voice; it is not a realistic, lip-synced human actor. Add approved actor footage, music, or a professional voiceover in your preferred editor if needed.
 
 ## Publish to Instagram
 
