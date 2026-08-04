@@ -13,8 +13,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 SIZE = (1080, 1920)
-WALL = "#dff3ff"
-INK = "#17324d"
+INK = "#10233e"
+CYAN = "#00cbed"
+NAVY = "#10233e"
 PANEL = "#fffdf8"
 
 
@@ -50,22 +51,63 @@ def draw_teacher(draw: ImageDraw.ImageDraw, x: int, y: int) -> None:
     draw.rectangle((x + 145, y + 445, x + 185, y + 720), fill="#f4bf2a")
 
 
+def concept_visual(draw: ImageDraw.ImageDraw, index: int) -> None:
+    """Draw one simple, visual-first explanation instead of a dense text slide."""
+    if index == 0:
+        draw.rounded_rectangle((135, 560, 610, 700), radius=38, fill="#ffffff")
+        draw.text((185, 600), "Can AI talk?", font=font(46), fill=NAVY)
+        draw.rounded_rectangle((470, 755, 945, 895), radius=38, fill=CYAN)
+        draw.text((520, 795), "Yes. Like this!", font=font(42), fill=NAVY)
+    elif index == 1:
+        for x, label in ((165, "books"), (365, "stories"), (565, "web pages")):
+            draw.rounded_rectangle((x, 585, x + 150, 790), radius=20, fill="#ffffff")
+            draw.rectangle((x + 20, 620, x + 130, 650), fill=CYAN)
+            draw.text((x + 28, 695), label, font=font(25), fill=NAVY)
+        draw.polygon([(745, 690), (825, 635), (905, 690), (825, 750)], fill=CYAN)
+        draw.text((755, 810), "patterns", font=font(32), fill="#ffffff")
+    elif index == 2:
+        words = ("The", "cat", "sat")
+        for position, word in enumerate(words):
+            x = 125 + position * 225
+            draw.rounded_rectangle((x, 650, x + 155, 790), radius=28, fill="#ffffff")
+            draw.text((x + 32, 700), word, font=font(39), fill=NAVY)
+            if position < 2:
+                draw.text((x + 165, 695), "→", font=font(48), fill=CYAN)
+        draw.rounded_rectangle((775, 650, 960, 790), radius=28, fill=CYAN)
+        draw.text((810, 700), "next?", font=font(39), fill=NAVY)
+    elif index == 3:
+        for y, label in ((555, "summarize"), (700, "translate"), (845, "brainstorm")):
+            draw.rounded_rectangle((180, y, 900, y + 105), radius=28, fill="#ffffff")
+            draw.ellipse((210, y + 27, 260, y + 77), fill=CYAN)
+            draw.text((300, y + 31), label, font=font(42), fill=NAVY)
+    else:
+        draw.rounded_rectangle((145, 570, 945, 880), radius=42, fill="#ffffff")
+        draw.text((220, 630), "AI can help,", font=font(58), fill=NAVY)
+        draw.text((220, 720), "but check facts!", font=font(58), fill=CYAN)
+        draw.ellipse((780, 665, 860, 745), outline=NAVY, width=14)
+        draw.line((840, 725, 910, 805), fill=NAVY, width=14)
+
+
 def classroom(scene: dict, index: int, directory: Path) -> Path:
-    image = Image.new("RGB", SIZE, WALL)
+    image = Image.new("RGB", SIZE, "#ffffff")
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 1500, 1080, 1920), fill="#f7d7a8")
-    draw.rounded_rectangle((70, 100, 1010, 560), radius=35, fill="#1d513d", outline="#9b693c", width=28)
-    draw.text((125, 160), "MINI AI CLASS", font=font(42), fill="#f9f3d6")
-    draw.text((125, 245), f"Lesson {index + 1}", font=font(32), fill="#bae8cb")
-    draw.rounded_rectangle((390, 680, 1010, 1400), radius=45, fill=PANEL, outline="#b8d9ea", width=8)
-    title_font, body_font = font(62), font(42)
-    y = wrapped_block(draw, scene["title"], 455, 755, 16, INK, title_font)
-    wrapped_block(draw, scene["body"], 455, y + 70, 24, "#35546e", body_font)
-    draw.polygon([(450, 1210), (365, 1300), (465, 1290)], fill=PANEL)
-    draw_teacher(draw, 60 if index % 2 == 0 else 90, 920)
-    draw.rounded_rectangle((70, 1735, 1010, 1840), radius=35, fill="#f4bf2a")
-    draw.text((125, 1765), "Listen, learn, and ask questions!", font=font(37), fill=INK)
-    target = directory / f"classroom-{index:02d}.png"
+    draw.rectangle((0, 0, 1080, 20), fill=CYAN)
+    draw.rounded_rectangle((70, 75, 510, 145), radius=20, fill=CYAN)
+    draw.text((100, 94), "AI EXPLAINED SIMPLY", font=font(29), fill=NAVY)
+    draw.text((75, 205), f"{index + 1:02d}", font=font(46), fill=CYAN)
+    title_font = font(74)
+    wrapped_block(draw, scene["title"], 155, 190, 20, INK, title_font)
+    draw.rounded_rectangle((70, 475, 1010, 1035), radius=42, fill=NAVY)
+    concept_visual(draw, index)
+    draw.rounded_rectangle((385, 1145, 1010, 1585), radius=38, fill="#e7f9fd")
+    body_font = font(44)
+    wrapped_block(draw, scene["body"], 445, 1200, 24, INK, body_font)
+    draw.polygon([(450, 1420), (365, 1500), (470, 1490)], fill="#e7f9fd")
+    draw_teacher(draw, 60, 1030)
+    draw.rounded_rectangle((70, 1740, 1010, 1845), radius=30, fill=CYAN)
+    footer = "Save this mini lesson  ↗" if index == 4 else "Swipe your mind: one idea at a time"
+    draw.text((118, 1770), footer, font=font(36), fill=NAVY)
+    target = directory / f"lesson-{index:02d}.png"
     image.save(target)
     return target
 
