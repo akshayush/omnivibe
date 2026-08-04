@@ -6,3 +6,7 @@ backend/__pycache__/
 .env.*
 !.env.example
 .DS_Store
+insta workflow/.venv/
+insta workflow/output/
+Insta reels/*
+!Insta reels/.gitkeep
