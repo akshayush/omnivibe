@@ -21,8 +21,8 @@ Build an original AI education and technical media website, inspired by market b
 
 ## Deployment Method
 ```bash
-docker build -t forgewithai-app .
-docker run --rm -p 8000:8000 forgewithai-app
+docker build -t omnivibe-app .
+docker run --rm -p 8000:8000 omnivibe-app
 ```
 
 App URL: `http://localhost:8000`

@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 
-app = FastAPI(title="ForgeWithAI API")
+app = FastAPI(title="Omnivibe API")
 ENQUIRY_RECIPIENT = "akshayush007@gmail.com"
 
 

@@ -14,13 +14,13 @@ For deployment, use the root `Dockerfile`. It builds frontend and backend into o
 ### Build
 
 ```bash
-docker build -t forgewithai-app .
+docker build -t omnivibe-app .
 ```
 
 ### Run
 
 ```bash
-docker run --rm -p 8000:8000 forgewithai-app
+docker run --rm -p 8000:8000 omnivibe-app
 ```
 
 Open: `http://localhost:8000`
