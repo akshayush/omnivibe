@@ -99,11 +99,11 @@ def classroom(scene: dict, index: int, directory: Path) -> Path:
     wrapped_block(draw, scene["title"], 155, 190, 20, INK, title_font)
     draw.rounded_rectangle((70, 475, 1010, 1035), radius=42, fill=NAVY)
     concept_visual(draw, index)
+    draw_teacher(draw, 60, 1030)
     draw.rounded_rectangle((385, 1145, 1010, 1585), radius=38, fill="#e7f9fd")
     body_font = font(44)
     wrapped_block(draw, scene["body"], 445, 1200, 24, INK, body_font)
     draw.polygon([(450, 1420), (365, 1500), (470, 1490)], fill="#e7f9fd")
-    draw_teacher(draw, 60, 1030)
     draw.rounded_rectangle((70, 1740, 1010, 1845), radius=30, fill=CYAN)
     footer = "Save this mini lesson  ↗" if index == 4 else "Swipe your mind: one idea at a time"
     draw.text((118, 1770), footer, font=font(36), fill=NAVY)
