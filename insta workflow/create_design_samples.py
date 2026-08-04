@@ -74,7 +74,8 @@ def carousel_sample(output: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Create Reel and carousel visual samples.")
     parser.add_argument("--presenter-image", required=True, type=Path)
-    parser.add_argument("--output", default="../Insta reels/design samples", type=Path)
+    default_output = Path(__file__).resolve().parent.parent / "Insta reels" / "design samples"
+    parser.add_argument("--output", default=default_output, type=Path)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     reel_sample(args.presenter_image, args.output / "presenter-reel-concept.png")
