@@ -29,8 +29,8 @@ export default function App() {
     <main>
       <header className="site-header">
         <div className="container nav">
-          <a className="brand" href="#top" aria-label="ForgeWithAI home">
-            Forge<span>With</span>AI
+          <a className="brand" href="#top" aria-label="Omnivibe home">
+            Omni<span>vibe</span>
           </a>
           <button
             className="menu-toggle"
@@ -57,7 +57,7 @@ export default function App() {
             <p className="eyebrow">Practical AI engineering · Technical education</p>
             <h1>Turn ambitious AI ideas into systems people can use.</h1>
             <p className="lead">
-              ForgeWithAI teaches the engineering behind dependable AI products.
+              Omnivibe teaches the engineering behind dependable AI products.
               Learn through complete builds, clear trade-offs, and reusable patterns
               — or partner with us to educate your developer audience.
             </p>
@@ -165,7 +165,7 @@ export default function App() {
       </section>
 
       <footer>
-        <div className="container footer"><a className="brand" href="#top">Forge<span>With</span>AI</a><p>Practical AI engineering education and technical media.</p><p>© {new Date().getFullYear()}</p></div>
+        <div className="container footer"><a className="brand" href="#top">Omni<span>vibe</span></a><p>Practical AI engineering education and technical media.</p><p>© {new Date().getFullYear()}</p></div>
       </footer>
     </main>
   );
