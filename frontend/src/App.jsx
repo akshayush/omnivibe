@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { blogPosts, displayDate } from "./blogPosts";
 
 export default function App() {
@@ -177,7 +178,18 @@ export default function App() {
             <button className="post-close" type="button" onClick={() => setSelectedPost(null)} aria-label="Close article">×</button>
             <p className="journal-meta">{displayDate(selectedPost.date)} · {selectedPost.readTime}</p>
             <h2>{selectedPost.title}</h2>
-            <ReactMarkdown>{selectedPost.body}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                table: ({ node: _node, ...props }) => (
+                  <div className="table-wrap">
+                    <table {...props} />
+                  </div>
+                ),
+              }}
+            >
+              {selectedPost.body}
+            </ReactMarkdown>
           </article>
         </div>
       )}
