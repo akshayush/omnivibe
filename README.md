@@ -62,12 +62,18 @@ The password value is intentionally not stored in this repository or exposed by 
 
 The OMNIVIBE Daily Journal is published from Markdown files in `frontend/src/content/blog/`.
 
+**Full system guide (data model, UI flow, visuals, deploy):** see [`JOURNAL.md`](./JOURNAL.md).
+
+Quick create:
+
 1. Copy `POST_TEMPLATE.md` and name the new file `YYYY-MM-DD-your-post-slug.post.md`.
 2. Fill in the title, date, excerpt, and reading time in the frontmatter.
-3. Write the post body in Markdown.
+3. Write the post body in Markdown (optional visual fences: `stack`, `loop`, `decide`, etc.).
 4. Commit and merge the post into `main`. Vercel builds and publishes it automatically.
 
 Only files ending in `.post.md` are published. `POST_TEMPLATE.md` is a writing reference and is not shown on the site.
+
+There is no in-product “create journal” admin UI today — authoring is file-based in git.
 
 ## Local dev (separate processes)
 
