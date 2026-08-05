@@ -15,21 +15,8 @@ Mixing them up leads to the wrong architecture, the wrong evaluation plan, and o
 
 Think of the stack as **capability → actor → operating system**:
 
-```text
-┌──────────────────────────────────────────────┐
-│  AGENTIC AI                                  │
-│  orchestration · policy · evals · humans     │
-│  ┌────────────────────────────────────────┐  │
-│  │  AGENT                                 │  │
-│  │  tools · memory · plan/act/check loop  │  │
-│  │  ┌──────────────────────────────────┐  │  │
-│  │  │  LLM                             │  │  │
-│  │  │  reason · write · classify       │  │  │
-│  │  └──────────────────────────────────┘  │  │
-│  └────────────────────────────────────────┘  │
-└──────────────────────────────────────────────┘
+```stack
 ```
-
 | Layer | Plain English | Best for | Not enough alone for |
 | --- | --- | --- | --- |
 | **LLM** | A reasoning engine | Answers, drafts, extraction | Owning multi-step work |
@@ -46,8 +33,7 @@ Think of the stack as **capability → actor → operating system**:
 
 **Does not do alone:** remember business rules forever, call production systems, own a multi-step job.
 
-```text
-You ──prompt──▶ [ LLM ] ──answer──▶ You
+```prompt
 ```
 
 **Builder rule:** If the user asks a question and one good response finishes the job, you need an LLM—not an agent.
@@ -62,27 +48,7 @@ An agent wraps an LLM with:
 2. **A loop** — plan → act → observe → revise
 3. **State** — memory of the task (and sometimes the user)
 
-```text
-                 ┌─────────────┐
-                 │    GOAL     │
-                 └──────┬──────┘
-                        ▼
-              ┌───────────────────┐
-         ┌───▶│  PLAN  (LLM)      │
-         │    └─────────┬─────────┘
-         │              ▼
-         │    ┌───────────────────┐
-         │    │  ACT   (tools)    │
-         │    └─────────┬─────────┘
-         │              ▼
-         │    ┌───────────────────┐
-         │    │  CHECK  (observe) │
-         │    └────┬─────────┬────┘
-         │   retry │         │ done
-         └─────────┘         ▼
-                        ┌─────────┐
-                        │  RESULT │
-                        └─────────┘
+```loop
 ```
 
 Example goal:
@@ -99,17 +65,7 @@ A bare LLM can *describe* how to do that. An agent can call the payments API, gr
 
 Usually includes orchestration, shared knowledge, policies, evals/traces, human approval gates, and multi-agent handoffs.
 
-```text
-  Research ──▶ Risk ──▶ Writer ──▶ Reviewer
-      │          │         │           │
-      └──── shared memory + policy ────┘
-                     │
-                     ▼
-              Human approval?
-                 │      │
-                yes     no
-                 ▼      ▼
-               Send   Hold / revise
+```handoff
 ```
 
 An agent is a capable worker. An agentic system is the company that hires, manages, and audits that worker.
@@ -120,15 +76,7 @@ An agent is a capable worker. An agentic system is the company that hires, manag
 
 **User goal:** “Prepare a customer renewal brief for Acme.”
 
-```text
-LLM ONLY
-  paste notes ──▶ draft brief ──▶ you verify & send
-
-SINGLE AGENT
-  CRM + tickets + usage ──▶ draft brief + email ──▶ confirm?
-
-AGENTIC SYSTEM
-  research ─▶ risk ─▶ write ─▶ review ─▶ approve ─▶ audit trail
+```levels
 ```
 
 | Approach | What happens | Who owns risk |
@@ -141,22 +89,7 @@ Same goal. Three levels of automation—and three engineering costs.
 
 ## How to choose
 
-```text
-One good answer enough?
-        │
-       yes ──────────────────▶  use an LLM
-        │
-        no
-        ▼
-Need tools + a finish condition?
-        │
-       yes ──────────────────▶  build an agent
-        │
-        no / still incomplete
-        ▼
-Need roles, policy, oversight?
-        │
-       yes ──────────────────▶  design agentic AI
+```decide
 ```
 
 Then be honest about cost:
@@ -204,10 +137,7 @@ If you cannot answer those, you do not have an agentic product yet. You have a p
 
 Take one workflow—onboarding a customer, triaging bugs, preparing a weekly report—and label each step:
 
-```text
-[ THINK ]  LLM reasoning
-[ ACT ]    agent tool use
-[ COORD ]  agentic system: approve / recover / hand off
+```labels
 ```
 
 You will usually find that only a few steps need autonomy. Automate those first. Leave the rest explicit.

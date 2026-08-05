@@ -1,7 +1,87 @@
-import { useState } from "react";
+import { useState, isValidElement, Children, cloneElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { blogPosts, displayDate } from "./blogPosts";
+import { JournalVisual, isJournalVisual, visualTypeFromLanguage } from "./JournalVisuals";
+
+function MarkdownTable({ children, ...props }) {
+  const headers = [];
+
+  Children.forEach(children, (section) => {
+    if (!isValidElement(section)) return;
+    if (section.type === "thead") {
+      Children.forEach(section.props.children, (row) => {
+        if (!isValidElement(row)) return;
+        Children.forEach(row.props.children, (cell) => {
+          if (!isValidElement(cell)) return;
+          headers.push(plainText(cell.props.children));
+        });
+      });
+    }
+  });
+
+  const labeled = Children.map(children, (section) => {
+    if (!isValidElement(section) || section.type !== "tbody") return section;
+    return cloneElement(section, {
+      children: Children.map(section.props.children, (row) => {
+        if (!isValidElement(row)) return row;
+        let cellIndex = 0;
+        return cloneElement(row, {
+          children: Children.map(row.props.children, (cell) => {
+            if (!isValidElement(cell)) return cell;
+            const label = headers[cellIndex] || "";
+            cellIndex += 1;
+            return cloneElement(cell, { "data-label": label });
+          }),
+        });
+      }),
+    });
+  });
+
+  return (
+    <div className="table-wrap">
+      <table {...props}>{labeled}</table>
+    </div>
+  );
+}
+
+function plainText(node) {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(plainText).join("");
+  if (isValidElement(node)) return plainText(node.props.children);
+  return "";
+}
+
+function MarkdownPre({ children }) {
+  return <>{children}</>;
+}
+
+function MarkdownCode({ className, children, ...props }) {
+  const language = /language-([\w-]+)/.exec(className || "")?.[1] || "";
+  const visualKey = language.startsWith("viz-") ? language : language ? `viz-${language}` : "";
+
+  if (visualKey && isJournalVisual(visualKey)) {
+    return <JournalVisual type={visualTypeFromLanguage(visualKey)} />;
+  }
+
+  const text = String(children);
+  if (className || text.includes("\n")) {
+    return (
+      <pre className="post-pre">
+        <code className={className} {...props}>
+          {children}
+        </code>
+      </pre>
+    );
+  }
+
+  return (
+    <code className={className} {...props}>
+      {children}
+    </code>
+  );
+}
 
 export default function App() {
   const [formStatus, setFormStatus] = useState("");
@@ -181,11 +261,9 @@ export default function App() {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                table: ({ node: _node, ...props }) => (
-                  <div className="table-wrap">
-                    <table {...props} />
-                  </div>
-                ),
+                table: ({ node: _node, ...props }) => <MarkdownTable {...props} />,
+                pre: MarkdownPre,
+                code: MarkdownCode,
               }}
             >
               {selectedPost.body}
