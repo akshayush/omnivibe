@@ -2,7 +2,7 @@
 title: "LLM vs Agents vs Agentic AI: a builder’s map"
 date: "2026-08-05"
 excerpt: "Three terms get mixed constantly. Here is a clear way to tell a model, an agent, and an agentic system apart—and when to use each."
-readTime: "7 min read"
+readTime: "8 min read"
 ---
 
 If you have spent time around AI products lately, you have heard three phrases used as if they mean the same thing: **LLM**, **agent**, and **agentic AI**.
@@ -11,130 +11,161 @@ They do not.
 
 Mixing them up leads to the wrong architecture, the wrong evaluation plan, and often a demo that looks smart until it meets a real workflow. This note separates the three layers and gives you a practical way to choose between them.
 
-## The short version
+## The stack at a glance
 
-| Layer | What it is | What it does well | What it does not do alone |
+Think of the stack as **capability → actor → operating system**:
+
+```text
+┌──────────────────────────────────────────────┐
+│  AGENTIC AI                                  │
+│  orchestration · policy · evals · humans     │
+│  ┌────────────────────────────────────────┐  │
+│  │  AGENT                                 │  │
+│  │  tools · memory · plan/act/check loop  │  │
+│  │  ┌──────────────────────────────────┐  │  │
+│  │  │  LLM                             │  │  │
+│  │  │  reason · write · classify       │  │  │
+│  │  └──────────────────────────────────┘  │  │
+│  └────────────────────────────────────────┘  │
+└──────────────────────────────────────────────┘
+```
+
+| Layer | Plain English | Best for | Not enough alone for |
 | --- | --- | --- | --- |
-| **LLM** | A model that predicts the next token | Reasoning, writing, classifying, transforming text | Persist goals, call tools reliably, own a multi-step job |
-| **Agent** | An LLM wrapped with tools, memory, and a control loop | Complete a task by planning, acting, and checking | Coordinate many goals, policies, and long-running work by itself |
-| **Agentic AI** | A system of agents, tools, memory, and orchestration | Run complex workflows with handoffs, retries, and oversight | Replace clear product design, evaluation, or human accountability |
+| **LLM** | A reasoning engine | Answers, drafts, extraction | Owning multi-step work |
+| **Agent** | An LLM that can act | Completing one goal with tools | Policies, handoffs, oversight |
+| **Agentic AI** | The system around agents | Reliable workflows at scale | Replacing product judgment |
 
-Think of it as **capability → actor → operating system**.
+## Layer cards
 
-## 1. LLM: the reasoning engine
+### LLM — the reasoning engine
 
-A large language model is a statistical engine trained to continue text. Given a prompt, it generates the most likely useful continuation.
+**Job:** turn a prompt into a useful response.
 
-That sounds simple, and it is powerful:
+**Does well:** summarize, draft, classify, transform text, extract structured data.
 
-- Summarize a contract
-- Draft an email in a specific tone
-- Explain a stack trace
-- Extract structured JSON from messy notes
-- Brainstorm product options
+**Does not do alone:** remember business rules forever, call production systems, own a multi-step job.
 
-What an LLM is **not**:
+```text
+You ──prompt──▶ [ LLM ] ──answer──▶ You
+```
 
-- A database of truth
-- A process owner
-- A system that remembers your business rules unless you put them in context
-- Something that can book a flight, update a ticket, or query production data without external tools
+**Builder rule:** If the user asks a question and one good response finishes the job, you need an LLM—not an agent.
 
-An LLM answers. It does not *run the job* unless you build the rest of the stack around it.
+### Agent — the task-completing actor
 
-**Builder rule:** If the user asks a question and you return an answer in one shot, you probably need an LLM—not an agent.
+**Job:** pursue an outcome until it is done or abandoned.
 
-## 2. Agent: the task-completing actor
+An agent wraps an LLM with:
 
-An agent starts with an LLM, then adds three things:
+1. **Tools** — APIs, browsers, code runners, search, CRMs
+2. **A loop** — plan → act → observe → revise
+3. **State** — memory of the task (and sometimes the user)
 
-1. **Tools** — APIs, browsers, code runners, search, CRMs, calendars
-2. **A loop** — plan → act → observe → revise until the goal is done or abandoned
-3. **State** — short-term memory of the task, and sometimes longer memory of the user or project
+```text
+                 ┌─────────────┐
+                 │    GOAL     │
+                 └──────┬──────┘
+                        ▼
+              ┌───────────────────┐
+         ┌───▶│  PLAN  (LLM)      │
+         │    └─────────┬─────────┘
+         │              ▼
+         │    ┌───────────────────┐
+         │    │  ACT   (tools)    │
+         │    └─────────┬─────────┘
+         │              ▼
+         │    ┌───────────────────┐
+         │    │  CHECK  (observe) │
+         │    └────┬─────────┬────┘
+         │   retry │         │ done
+         └─────────┘         ▼
+                        ┌─────────┐
+                        │  RESULT │
+                        └─────────┘
+```
 
-The difference is intent. An LLM *responds*. An agent *pursues an outcome*.
-
-Example:
+Example goal:
 
 > “Find last week’s failed payments, group them by reason, and open a Slack thread for the top three causes.”
 
-A bare LLM can describe how you might do that. An agent can actually:
-
-- call the payments API
-- filter and group the results
-- draft and post the Slack message
-- stop when the thread exists
-
-That loop is why agents feel magical—and why they fail in distinctive ways. They can call the wrong tool, loop forever, invent progress, or take irreversible actions if permissions are too broad.
+A bare LLM can *describe* how to do that. An agent can call the payments API, group the results, post to Slack, and stop when the thread exists.
 
 **Builder rule:** If the work needs tools, multi-step decisions, and a finish condition, you need an agent.
 
-## 3. Agentic AI: the system around the actors
+### Agentic AI — the system around the actors
 
-“Agentic AI” is the product and operations layer: how agents are supervised, composed, and made safe enough for real work.
+**Job:** make autonomous work reliable enough to trust.
 
-It usually includes:
+Usually includes orchestration, shared knowledge, policies, evals/traces, human approval gates, and multi-agent handoffs.
 
-- **Orchestration** — which agent runs when, and how work is handed off
-- **Shared memory / knowledge** — docs, tickets, prior decisions, retrieval
-- **Policies** — what tools are allowed, spend limits, approval gates
-- **Evaluation and observability** — traces, success criteria, regression tests
-- **Human-in-the-loop** — review steps for high-risk actions
-- **Multi-agent collaboration** — researcher, writer, reviewer, deployer as specialized roles
+```text
+  Research ──▶ Risk ──▶ Writer ──▶ Reviewer
+      │          │         │           │
+      └──── shared memory + policy ────┘
+                     │
+                     ▼
+              Human approval?
+                 │      │
+                yes     no
+                 ▼      ▼
+               Send   Hold / revise
+```
 
 An agent is a capable worker. An agentic system is the company that hires, manages, and audits that worker.
 
-This is also where product quality lives. Most “agent demos” fail in production not because the model is weak, but because the system never defined:
+**Builder rule:** If you need reliability across workflows, roles, policies, and time, you are building agentic AI.
 
-- what “done” means
-- which tools are trusted
-- how failures are recovered
-- when a human must approve
-
-**Builder rule:** If you need reliability across workflows, roles, policies, and time, you are building agentic AI—not just wrapping a chat model.
-
-## A side-by-side example
+## Same goal, three levels
 
 **User goal:** “Prepare a customer renewal brief for Acme.”
 
-**LLM-only**
+```text
+LLM ONLY
+  paste notes ──▶ draft brief ──▶ you verify & send
 
-- You paste CRM notes and ask for a brief.
-- You get a useful draft.
-- You still fetch data, verify numbers, and send the email yourself.
+SINGLE AGENT
+  CRM + tickets + usage ──▶ draft brief + email ──▶ confirm?
 
-**Single agent**
+AGENTIC SYSTEM
+  research ─▶ risk ─▶ write ─▶ review ─▶ approve ─▶ audit trail
+```
 
-- The agent pulls CRM history, support tickets, and usage metrics.
-- It drafts the brief and a suggested email.
-- It may ask you to confirm before sending.
+| Approach | What happens | Who owns risk |
+| --- | --- | --- |
+| **LLM-only** | You paste notes; model drafts; you fetch, verify, send | You |
+| **Single agent** | Agent pulls data, drafts brief/email, may ask before send | Agent + your approval |
+| **Agentic system** | Specialized agents + policy + human gate + traces | The system design |
 
-**Agentic system**
-
-- A research agent gathers account facts.
-- A risk agent flags churn signals and contract constraints.
-- A writer agent produces the brief.
-- A reviewer agent checks claims against sources.
-- Policy blocks sending without a human approval if deal size exceeds a threshold.
-- Traces are stored so the team can audit what happened later.
-
-Same goal. Three different levels of automation—and three different engineering costs.
+Same goal. Three levels of automation—and three engineering costs.
 
 ## How to choose
 
-Ask these questions in order:
-
-1. **Is one good response enough?** → Use an LLM (plus retrieval if you need grounded answers).
-2. **Must software take actions across tools to finish a task?** → Build an agent.
-3. **Do you need multiple roles, durable workflows, policy, and oversight?** → Design an agentic system.
+```text
+One good answer enough?
+        │
+       yes ──────────────────▶  use an LLM
+        │
+        no
+        ▼
+Need tools + a finish condition?
+        │
+       yes ──────────────────▶  build an agent
+        │
+        no / still incomplete
+        ▼
+Need roles, policy, oversight?
+        │
+       yes ──────────────────▶  design agentic AI
+```
 
 Then be honest about cost:
 
-- LLMs are cheapest to ship and easiest to evaluate.
-- Agents add tool reliability, permissions, and loop control as first-class problems.
-- Agentic systems add orchestration, monitoring, evaluation harnesses, and operational design.
+- **LLMs** are cheapest to ship and easiest to evaluate.
+- **Agents** add tool reliability, permissions, and loop control.
+- **Agentic systems** add orchestration, monitoring, eval harnesses, and ops design.
 
-Start at the lowest layer that can satisfy the user’s job. “Agentic” is not a badge of sophistication. It is a commitment to operate autonomous work safely.
+Start at the lowest layer that satisfies the user’s job. “Agentic” is not a badge of sophistication. It is a commitment to operate autonomous work safely.
 
 ## Common confusions worth retiring
 
@@ -142,23 +173,23 @@ Start at the lowest layer that can satisfy the user’s job. “Agentic” is no
 No. A model behind a chat UI is still an LLM product unless it owns goals, tools, and a completion loop.
 
 **“We added function calling, so we have agentic AI.”**  
-Function calling is a tool interface. One tool call in a single turn is not an agentic system. Persistent goals, retries, memory, and policies are.
+Function calling is a tool interface. One tool call in a single turn is not an agentic system.
 
 **“Agents will replace our workflows.”**  
-Agents can *run* steps inside workflows. Someone still has to define the workflow, the success metrics, and the failure modes.
+Agents can *run* steps inside workflows. Someone still defines success metrics and failure modes.
 
 **“Bigger models fix agent failures.”**  
-Better models help. They do not replace tool design, permission boundaries, evals, or human escalation paths.
+Better models help. They do not replace tool design, permission boundaries, evals, or escalation paths.
 
-## What good looks like in practice
+## What good looks like
 
-If you are building today, aim for this progression:
+Ship in this order:
 
-1. **Nail the LLM path first** — clear prompts, grounded context, structured outputs, measurable quality.
+1. **Nail the LLM path** — clear prompts, grounded context, structured outputs, measurable quality.
 2. **Add a narrow agent** — one goal, few tools, explicit stop conditions, logged traces.
 3. **Graduate to agentic design** only when you need handoffs, parallel roles, long-running jobs, or enterprise controls.
 
-A useful mental checklist before you ship an “agent”:
+Checklist before you ship an “agent”:
 
 - What is the goal in one sentence?
 - Which tools are allowed, and which are write vs read?
@@ -171,12 +202,14 @@ If you cannot answer those, you do not have an agentic product yet. You have a p
 
 ## Try this
 
-Take one workflow on your team—onboarding a customer, triaging bugs, preparing a weekly report—and label each step:
+Take one workflow—onboarding a customer, triaging bugs, preparing a weekly report—and label each step:
 
-- **Think** (LLM)
-- **Act** (agent tool use)
-- **Coordinate / approve / recover** (agentic system)
+```text
+[ THINK ]  LLM reasoning
+[ ACT ]    agent tool use
+[ COORD ]  agentic system: approve / recover / hand off
+```
 
-You will usually find that only a few steps need autonomy. Automate those first. Leave the rest explicit. Clarity beats buzzwords—and it ships faster.
+You will usually find that only a few steps need autonomy. Automate those first. Leave the rest explicit.
 
-The names will keep evolving. The stack will not: models reason, agents act, and agentic systems make action reliable enough to trust.
+The names will keep evolving. The stack will not: **models reason, agents act, and agentic systems make action reliable enough to trust.**
