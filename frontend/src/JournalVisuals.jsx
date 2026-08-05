@@ -2,14 +2,14 @@ const VISUALS = {
   stack: (
     <div className="viz viz-stack" role="img" aria-label="Nested stack: LLM inside Agent inside Agentic AI">
       <div className="viz-layer viz-layer-outer">
-        <strong>Agentic AI</strong>
-        <span>orchestration · policy · evals · humans</span>
+        <p className="viz-layer-title">Agentic AI</p>
+        <p className="viz-layer-copy">orchestration · policy · evals · humans</p>
         <div className="viz-layer viz-layer-mid">
-          <strong>Agent</strong>
-          <span>tools · memory · plan / act / check</span>
+          <p className="viz-layer-title">Agent</p>
+          <p className="viz-layer-copy">tools · memory · plan / act / check</p>
           <div className="viz-layer viz-layer-inner">
-            <strong>LLM</strong>
-            <span>reason · write · classify</span>
+            <p className="viz-layer-title">LLM</p>
+            <p className="viz-layer-copy">reason · write · classify</p>
           </div>
         </div>
       </div>

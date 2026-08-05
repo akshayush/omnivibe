@@ -1,4 +1,4 @@
-import { useState, isValidElement, Children, cloneElement } from "react";
+import { useState, useEffect, isValidElement, Children, cloneElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { blogPosts, displayDate } from "./blogPosts";
@@ -87,6 +87,15 @@ export default function App() {
   const [formStatus, setFormStatus] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+
+  useEffect(() => {
+    if (!selectedPost) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [selectedPost]);
 
   async function submitInquiry(event) {
     event.preventDefault();
