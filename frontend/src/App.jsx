@@ -3,6 +3,69 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { blogPosts, displayDate } from "./blogPosts";
 import { JournalVisual, isJournalVisual, visualTypeFromLanguage } from "./JournalVisuals";
+import DataProfiler from "./DataProfiler";
+import AgentTrace from "./AgentTrace";
+
+const SERVICES = [
+  {
+    number: "01",
+    kicker: "Analytics & data consulting",
+    title: "For teams whose numbers don’t agree",
+    body:
+      "Metric definitions, warehouse modelling, dashboard rebuilds, and audits of reporting nobody trusts anymore. You get a documented model, tested transformations, and numbers your team can defend in a meeting.",
+    terms: "Typical: 2–6 weeks · Fixed scope or retainer",
+    cta: "Try the data quality demo",
+    href: "#playground",
+  },
+  {
+    number: "02",
+    kicker: "Data pipelines & platform",
+    title: "For teams whose data arrives late or broken",
+    body:
+      "Ingestion, transformation, orchestration, data quality checks, and cost tuning. Built with tests and alerting from day one, so failures page you before they page your CEO.",
+    terms: "Typical: 3–8 weeks · Fixed scope or retainer",
+    cta: "See the quality checks I ship",
+    href: "#playground",
+  },
+  {
+    number: "03",
+    kicker: "LLM applications",
+    title: "For teams sitting on documents and text",
+    body:
+      "Retrieval over private knowledge, extraction, classification, and copilots — with retrieval quality measured, not assumed. Shipped with evals so you know when a model change breaks something.",
+    terms: "Typical: 3–8 weeks · Fixed scope",
+    cta: "Read how I evaluate them",
+    href: "#journal",
+  },
+  {
+    number: "04",
+    kicker: "Agentic applications",
+    title: "For work that needs tools, not just answers",
+    body:
+      "Agents that plan, call your systems, check their own work, and stop. Built with permission boundaries, human approval gates, and full run traces — because autonomy without oversight is a liability.",
+    terms: "Typical: 4–10 weeks · Fixed scope",
+    cta: "Replay a real agent run",
+    href: "#playground",
+  },
+];
+
+const CAPABILITIES = [
+  "Python", "SQL", "TypeScript", "React", "FastAPI", "Postgres", "Snowflake", "BigQuery",
+  "dbt", "Airflow", "Spark", "Kafka", "Docker", "AWS", "GCP", "Vercel",
+  "LangGraph", "OpenAI", "Anthropic", "Vector databases", "Evals & tracing", "CI/CD",
+];
+
+const PROJECT_TYPES = [
+  "Analytics & consulting",
+  "Data pipelines",
+  "LLM application",
+  "Agentic application",
+  "Something else",
+];
+
+const TIMELINES = ["ASAP", "This quarter", "Exploring"];
+
+const BUDGETS = ["< $5k", "$5k–15k", "$15k–50k", "$50k+", "Not sure yet"];
 
 function MarkdownTable({ children, ...props }) {
   const headers = [];
@@ -101,7 +164,7 @@ export default function App() {
     event.preventDefault();
     const form = event.currentTarget;
     const payload = Object.fromEntries(new FormData(form));
-    setFormStatus("Sending your inquiry…");
+    setFormStatus("Sending your enquiry…");
 
     try {
       const response = await fetch("/api/contact", {
@@ -136,116 +199,177 @@ export default function App() {
             <span /><span /><span />
           </button>
           <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Main navigation">
-            <a href="#learn" onClick={() => setMenuOpen(false)}>Learning</a>
-            <a href="#journal" onClick={() => setMenuOpen(false)}>Daily journal</a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>For teams</a>
-            <a href="#program" onClick={() => setMenuOpen(false)}>Program</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
+            <a href="#playground" onClick={() => setMenuOpen(false)}>Live demos</a>
+            <a href="#process" onClick={() => setMenuOpen(false)}>How I work</a>
+            <a href="#journal" onClick={() => setMenuOpen(false)}>Journal</a>
           </nav>
-          <a className="button button-small" href="#contact">Start a conversation</a>
+          <a className="button button-small" href="#contact">Start a project</a>
         </div>
       </header>
 
       <section className="hero" id="top">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">Practical AI engineering · Technical education</p>
-            <h1>Turn ambitious AI ideas into systems people can use.</h1>
+            <p className="eyebrow">Data engineering · AI systems · Custom software</p>
+            <h1>If it moves data or makes decisions, I can build it.</h1>
             <p className="lead">
-              Omnivibe teaches the engineering behind dependable AI products.
-              Learn through complete builds, clear trade-offs, and reusable patterns
-              — or partner with us to educate your developer audience.
+              I design and ship production systems end to end — pipelines, analytics,
+              LLM applications, agents, APIs, and the unglamorous reliability work that
+              keeps them running. Some clients arrive with a spec. Most arrive with a
+              messy problem. Both are fine.
             </p>
             <div className="action-row">
-              <a className="button" href="#learn">Explore learning</a>
-              <a className="button button-ghost" href="#services">Partner with us</a>
+              <a className="button" href="#playground">See it working</a>
+              <a className="button button-ghost" href="#contact">Start a project</a>
             </div>
+            <p className="hero-availability">
+              Available for freelance and contract work · Remote · Typical start: within 2 weeks
+            </p>
           </div>
-          <aside className="blueprint-card" aria-label="Production AI system blueprint">
+          <aside className="blueprint-card" aria-label="Production system blueprint">
             <div className="window-dots"><i /><i /><i /></div>
-            <p className="code-label">SYSTEM BLUEPRINT</p>
-            <div className="flow-row"><b>01</b><span>Source data</span><em>→</em><span>Search layer</span></div>
+            <p className="code-label">HOW THE WORK SHIPS</p>
+            <div className="flow-row"><b>01</b><span>Source data</span><em>→</em><span>Modelled + tested</span></div>
             <div className="flow-row"><b>02</b><span>Tools</span><em>→</em><span>Agent workflow</span></div>
-            <div className="flow-row"><b>03</b><span>Evaluation</span><em>→</em><span>Release with confidence</span></div>
-            <p className="blueprint-note">Learn the whole system, including the parts that make it reliable.</p>
+            <div className="flow-row"><b>03</b><span>Evaluation</span><em>→</em><span>Ship with confidence</span></div>
+            <p className="blueprint-note">Built with tests, traces, and alerting from day one — not bolted on later.</p>
           </aside>
         </div>
       </section>
 
       <section className="proof-strip">
         <div className="container proof-grid">
-          <p><strong>Build-first</strong><span>Learning grounded in working systems</span></p>
+          <p><strong>Build-first</strong><span>Working software every week, not status decks</span></p>
           <p><strong>Clear thinking</strong><span>Architecture, trade-offs, and evidence</span></p>
-          <p><strong>Useful media</strong><span>Technical stories developers value</span></p>
+          <p><strong>No black boxes</strong><span>Documented, tested, and handed over</span></p>
         </div>
       </section>
 
-      <section className="section" id="learn">
+      <section className="section" id="services">
         <div className="container">
-          <p className="eyebrow">Start where you are</p>
-          <h2>Two paths. One focus: useful AI.</h2>
-          <p className="section-intro">Choose the kind of progress you need today, then follow a path designed around tangible outcomes.</p>
-          <div className="path-grid">
-            <article className="path-card">
-              <span className="card-number">01</span>
-              <p className="card-kicker">For builders</p>
-              <h3>Develop production-ready AI skills</h3>
-              <p>Go beyond isolated prompts. Work through complete application patterns with code, context, and engineering decisions included.</p>
-              <ul>
-                <li>Guided end-to-end projects</li>
-                <li>Implementation notes you can reference later</li>
-                <li>Practical lessons on quality and reliability</li>
-              </ul>
-              <a className="text-link" href="#program">View the program <span>→</span></a>
-            </article>
-            <article className="path-card path-card-accent" id="services">
-              <span className="card-number">02</span>
-              <p className="card-kicker">For AI teams</p>
-              <h3>Help developers understand your product</h3>
-              <p>Make your product easier to evaluate and adopt with credible technical education built around real implementation.</p>
-              <ul>
-                <li>Technical tutorials and project narratives</li>
-                <li>Educational editorial campaigns</li>
-                <li>Adaptable content for developer channels</li>
-              </ul>
-              <a className="text-link" href="#contact">Discuss a partnership <span>→</span></a>
-            </article>
+          <p className="eyebrow">What I build</p>
+          <h2>Four common starting points. The scope is not the limit.</h2>
+          <p className="section-intro">
+            Most engagements begin as one of these. Many end up somewhere else — a migration
+            that became a platform, a dashboard that became a data product. The engineering
+            is the same discipline either way.
+          </p>
+
+          <div className="service-grid">
+            {SERVICES.map((service) => (
+              <article className="service-card" key={service.number}>
+                <span className="card-number">{service.number}</span>
+                <p className="card-kicker">{service.kicker}</p>
+                <h3>{service.title}</h3>
+                <p>{service.body}</p>
+                <p className="service-terms">{service.terms}</p>
+                <a className="text-link" href={service.href}>{service.cta} <span>→</span></a>
+              </article>
+            ))}
+          </div>
+
+          <article className="service-open">
+            <p className="card-kicker">Open scope</p>
+            <h3>Not on this list? That is usually a yes.</h3>
+            <p>
+              Internal tools, API integrations, cloud migrations, automation, scraping and
+              enrichment, ML deployment, performance rescues, legacy untangling, or an idea
+              that does not have a category yet.
+            </p>
+            <p>
+              Bring the problem, not the spec. The first call is figuring out whether it should
+              be built at all — and if so, the smallest version that proves it.
+            </p>
+            <a className="button" href="#contact">Describe your problem</a>
+          </article>
+
+          <div className="capability-strip">
+            <p className="capability-title">Stack I work in</p>
+            <div className="capability-list">
+              {CAPABILITIES.map((item) => <span key={item}>{item}</span>)}
+            </div>
+            <p className="capability-note">New tool in your stack? I have learned worse.</p>
           </div>
         </div>
       </section>
 
-      <section className="section program-section" id="program">
+      <section className="section playground-section" id="playground">
+        <div className="container">
+          <p className="eyebrow">Live demos</p>
+          <h2>Proof you can click, not a portfolio screenshot.</h2>
+          <p className="section-intro">
+            These run in the browser against the same engineering patterns I ship to clients.
+            Nothing you upload is stored.
+          </p>
+
+          <div className="demo-block">
+            <div className="demo-heading">
+              <h3>Data quality auditor</h3>
+              <p>
+                Profile a dataset in seconds: types, null rates, distinct counts, outliers,
+                duplicates, and the data-quality checks I would put in your pipeline.
+              </p>
+            </div>
+            <DataProfiler />
+          </div>
+
+          <div className="demo-block">
+            <div className="demo-heading">
+              <h3>Agent run trace</h3>
+              <p>
+                A replay of a real tool-using agent run — including the tool failure it recovered
+                from and the approval gate that stopped it before a write action.
+              </p>
+            </div>
+            <AgentTrace />
+          </div>
+        </div>
+      </section>
+
+      <section className="section program-section" id="process">
         <div className="container program-grid">
           <div>
-            <p className="eyebrow">Featured learning track</p>
-            <h2>Agent Systems: from prototype to dependable product.</h2>
-            <p className="section-intro">A structured build that connects retrieval, tools, orchestration, evaluation, and observability into one coherent system.</p>
-            <div className="badges"><span>Self-paced</span><span>Code-along labs</span><span>Production patterns</span></div>
-            <a className="button" href="#contact">Request program details</a>
+            <p className="eyebrow">How I work</p>
+            <h2>Small scopes, visible progress, no black boxes.</h2>
+            <p className="section-intro">
+              You should be able to cancel after any milestone and still own something useful.
+              That constraint keeps the work honest.
+            </p>
+            <div className="badges">
+              <span>Fixed-scope project</span>
+              <span>Monthly retainer</span>
+              <span>Hourly advisory</span>
+            </div>
+            <a className="button" href="#contact">Book a scope call</a>
           </div>
           <ol className="curriculum">
-            <li><b>01</b><div><h3>Prepare knowledge</h3><p>Design dependable ingestion, chunking, and indexing workflows.</p></div></li>
-            <li><b>02</b><div><h3>Retrieve with intent</h3><p>Combine search approaches and assess the quality of results.</p></div></li>
-            <li><b>03</b><div><h3>Coordinate agents</h3><p>Connect tools, instructions, state, and safe handoffs.</p></div></li>
-            <li><b>04</b><div><h3>Measure what matters</h3><p>Introduce tracing, evaluation, and feedback loops before launch.</p></div></li>
+            <li><b>01</b><div><h3>Scope call</h3><p>Free, 30 minutes. We decide together if this is worth building.</p></div></li>
+            <li><b>02</b><div><h3>Written plan</h3><p>Approach, milestones, and fixed price or rate before any code.</p></div></li>
+            <li><b>03</b><div><h3>Weekly demos</h3><p>You see working software each week, not a status update.</p></div></li>
+            <li><b>04</b><div><h3>Handover</h3><p>Documented, tested, and yours. No lock-in to me.</p></div></li>
           </ol>
         </div>
       </section>
 
       <section className="section channels">
         <div className="container channels-layout">
-          <div><p className="eyebrow">Technical media</p><h2>One useful idea, thoughtfully distributed.</h2></div>
-          <p className="section-intro">We shape technical stories for the places builders already learn: source code, long-form explanations, concise social education, and video.</p>
+          <div><p className="eyebrow">Where the thinking shows up</p><h2>I write the engineering down.</h2></div>
+          <p className="section-intro">The journal below is the same reasoning I bring to client work — architecture trade-offs, reliability patterns, and honest limits. It is the cheapest way to judge how I think before you hire me.</p>
         </div>
         <div className="container channel-list">
-          {["Open source", "Newsletter", "LinkedIn", "Video", "Short-form", "Workshops"].map((channel) => <span key={channel}>{channel}</span>)}
+          {["Open source", "Journal", "LinkedIn", "Video", "Short-form", "Workshops"].map((channel) => <span key={channel}>{channel}</span>)}
         </div>
       </section>
 
       <section className="section journal-section" id="journal">
         <div className="container">
-          <p className="eyebrow">The Omnivibe daily journal</p>
-          <h2>One useful AI idea, every day.</h2>
-          <p className="section-intro">Short notes for curious learners and builders. Read the latest idea now, then return for tomorrow’s.</p>
+          <p className="eyebrow">Engineering journal</p>
+          <h2>How I think about building this stuff.</h2>
+          <p className="section-intro">
+            Working notes on data and AI systems: what to build, what to skip, and why.
+            Written from delivery experience, not press releases.
+          </p>
           <div className="journal-grid">
             {blogPosts.map((post) => (
               <article className="journal-card" key={post.slug}>
@@ -284,22 +408,53 @@ export default function App() {
       <section className="section contact-section" id="contact">
         <div className="container contact-grid">
           <div>
-            <p className="eyebrow">Let’s make progress</p>
-            <h2>Tell us what you’re building.</h2>
-            <p className="section-intro">Share your learning goal or developer education challenge. We’ll respond with the best next step.</p>
+            <p className="eyebrow">Start a project</p>
+            <h2>Tell me what’s broken.</h2>
+            <p className="section-intro">
+              No spec required. A paragraph about the problem is enough to start.
+              You will get a real reply with a suggested next step — not a sales sequence.
+            </p>
+            <ul className="contact-points">
+              <li>Free 30-minute scope call</li>
+              <li>Written plan and price before any code</li>
+              <li>Happy to say when it should not be built</li>
+            </ul>
           </div>
           <form className="contact-form" onSubmit={submitInquiry}>
-            <label>Name<input name="name" required minLength="2" autoComplete="name" /></label>
-            <label>Email<input type="email" name="email" required autoComplete="email" /></label>
-            <label>How can we help?<textarea name="message" required minLength="10" rows="4" /></label>
-            <button className="button" type="submit">Send inquiry</button>
+            <div className="form-row">
+              <label>Name<input name="name" required minLength="2" autoComplete="name" /></label>
+              <label>Email<input type="email" name="email" required autoComplete="email" /></label>
+            </div>
+            <label>
+              What do you need?
+              <select name="projectType" defaultValue={PROJECT_TYPES[0]}>
+                {PROJECT_TYPES.map((option) => <option key={option}>{option}</option>)}
+              </select>
+            </label>
+            <div className="form-row">
+              <label>
+                Timeline
+                <select name="timeline" defaultValue={TIMELINES[1]}>
+                  {TIMELINES.map((option) => <option key={option}>{option}</option>)}
+                </select>
+              </label>
+              <label>
+                Budget range
+                <select name="budget" defaultValue={BUDGETS[4]}>
+                  {BUDGETS.map((option) => <option key={option}>{option}</option>)}
+                </select>
+              </label>
+            </div>
+            <label>Current stack (optional)<input name="stack" maxLength="300" placeholder="Postgres, dbt, Airflow…" /></label>
+            <label>The problem<textarea name="message" required minLength="10" rows="4" placeholder="What is broken, slow, manual, or missing?" /></label>
+            <button className="button" type="submit">Send enquiry</button>
             <p className="form-status" role="status">{formStatus}</p>
           </form>
         </div>
       </section>
 
       <footer>
-        <div className="container footer"><a className="brand" href="#top">Omni<span>vibe</span></a><p>Practical AI engineering education and technical media.</p><p>© {new Date().getFullYear()}</p></div>
+        <div className="container footer"><a className="brand" href="#top">Omni<span>vibe</span></a><p>Data engineering, AI systems, and custom software — built to survive production.</p><p>© {new Date().getFullYear()}</p></div>
       </footer>
     </main>
   );
