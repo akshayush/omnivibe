@@ -117,6 +117,56 @@ const VISUALS = {
       <div className="viz-label-card"><strong>Coord</strong><span>approve / recover / hand off</span></div>
     </div>
   ),
+  single: (
+    <div className="viz viz-single" role="img" aria-label="Single agent: one goal, one loop, one tool belt">
+      <div className="viz-decide-q">One goal</div>
+      <div className="viz-chip-row">
+        <span className="viz-chip viz-chip-done">One agent loop</span>
+      </div>
+      <div className="viz-note">plan → act → check → done</div>
+      <div className="viz-chip-row">
+        <span className="viz-chip">shared tool belt</span>
+        <span className="viz-chip">one memory</span>
+        <span className="viz-chip">one stop condition</span>
+      </div>
+    </div>
+  ),
+  multi: (
+    <div className="viz viz-handoff" role="img" aria-label="Multi-agent: specialists coordinated toward one outcome">
+      <div className="viz-decide-q">One outcome, many roles</div>
+      <div className="viz-chip-row">
+        <span className="viz-chip">Researcher</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip">Worker</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip">Reviewer</span>
+      </div>
+      <div className="viz-note">orchestrator · shared state · handoff contracts</div>
+      <div className="viz-chip-row">
+        <span className="viz-chip viz-chip-warn">separate prompts + tools</span>
+        <span className="viz-chip viz-chip-done">clear ownership per step</span>
+      </div>
+    </div>
+  ),
+  "one-enough": (
+    <div className="viz viz-decide" role="img" aria-label="Decision flow for staying with one agent loop">
+      <div className="viz-decide-q">One clear goal + one tool belt?</div>
+      <div className="viz-decide-row">
+        <span className="viz-chip viz-chip-done">yes → single agent</span>
+        <span className="viz-chip">no ↓</span>
+      </div>
+      <div className="viz-decide-q">Do steps need different skills, models, or permissions?</div>
+      <div className="viz-decide-row">
+        <span className="viz-chip">no → keep one loop</span>
+        <span className="viz-chip viz-chip-done">yes ↓</span>
+      </div>
+      <div className="viz-decide-q">Is failure isolation or parallel work worth the cost?</div>
+      <div className="viz-decide-row">
+        <span className="viz-chip viz-chip-done">yes → multi-agent</span>
+        <span className="viz-chip">no → stay single</span>
+      </div>
+    </div>
+  ),
 };
 
 export function JournalVisual({ type }) {
