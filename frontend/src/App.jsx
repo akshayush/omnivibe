@@ -24,7 +24,7 @@ const SERVICES = [
     body:
       "Ingestion, transformation, orchestration, data quality checks, and cost tuning. Built with tests and alerting from day one, so failures page you before they page your CEO.",
     terms: "Typical: 3–8 weeks · Fixed scope or retainer",
-    cta: "See the quality checks I ship",
+    cta: "See the quality checks we ship",
     href: "#playground",
   },
   {
@@ -34,7 +34,7 @@ const SERVICES = [
     body:
       "Retrieval over private knowledge, extraction, classification, and copilots — with retrieval quality measured, not assumed. Shipped with evals so you know when a model change breaks something.",
     terms: "Typical: 3–8 weeks · Fixed scope",
-    cta: "Read how I evaluate them",
+    cta: "Read how we evaluate them",
     href: "#journal",
   },
   {
@@ -201,7 +201,7 @@ export default function App() {
           <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Main navigation">
             <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
             <a href="#playground" onClick={() => setMenuOpen(false)}>Live demos</a>
-            <a href="#process" onClick={() => setMenuOpen(false)}>How I work</a>
+            <a href="#process" onClick={() => setMenuOpen(false)}>How we work</a>
             <a href="#journal" onClick={() => setMenuOpen(false)}>Journal</a>
           </nav>
           <a className="button button-small" href="#contact">Start a project</a>
@@ -212,9 +212,9 @@ export default function App() {
         <div className="container hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">Data engineering · AI systems · Custom software</p>
-            <h1>If it moves data or makes decisions, I can build it.</h1>
+            <h1>If it moves data or makes decisions, Omnivibe can build it.</h1>
             <p className="lead">
-              I design and ship production systems end to end — pipelines, analytics,
+              We design and ship production systems end to end — pipelines, analytics,
               LLM applications, agents, APIs, and the unglamorous reliability work that
               keeps them running. Some clients arrive with a spec. Most arrive with a
               messy problem. Both are fine.
@@ -224,7 +224,7 @@ export default function App() {
               <a className="button button-ghost" href="#contact">Start a project</a>
             </div>
             <p className="hero-availability">
-              Available for freelance and contract work · Remote · Typical start: within 2 weeks
+              Taking on new client projects · Remote · Typical start: within 2 weeks
             </p>
           </div>
           <aside className="blueprint-card" aria-label="Production system blueprint">
@@ -248,7 +248,7 @@ export default function App() {
 
       <section className="section" id="services">
         <div className="container">
-          <p className="eyebrow">What I build</p>
+          <p className="eyebrow">What we build</p>
           <h2>Four common starting points. The scope is not the limit.</h2>
           <p className="section-intro">
             Most engagements begin as one of these. Many end up somewhere else — a migration
@@ -285,11 +285,11 @@ export default function App() {
           </article>
 
           <div className="capability-strip">
-            <p className="capability-title">Stack I work in</p>
+            <p className="capability-title">Stack we work in</p>
             <div className="capability-list">
               {CAPABILITIES.map((item) => <span key={item}>{item}</span>)}
             </div>
-            <p className="capability-note">New tool in your stack? I have learned worse.</p>
+            <p className="capability-note">New tool in your stack? We pick it up.</p>
           </div>
         </div>
       </section>
@@ -299,7 +299,7 @@ export default function App() {
           <p className="eyebrow">Live demos</p>
           <h2>Proof you can click, not a portfolio screenshot.</h2>
           <p className="section-intro">
-            These run in the browser against the same engineering patterns I ship to clients.
+            These run in the browser against the same engineering patterns we ship to clients.
             Nothing you upload is stored.
           </p>
 
@@ -308,7 +308,7 @@ export default function App() {
               <h3>Data quality auditor</h3>
               <p>
                 Profile a dataset in seconds: types, null rates, distinct counts, outliers,
-                duplicates, and the data-quality checks I would put in your pipeline.
+                duplicates, and the data-quality checks we put in production pipelines.
               </p>
             </div>
             <DataProfiler />
@@ -330,7 +330,7 @@ export default function App() {
       <section className="section program-section" id="process">
         <div className="container program-grid">
           <div>
-            <p className="eyebrow">How I work</p>
+            <p className="eyebrow">How we work</p>
             <h2>Small scopes, visible progress, no black boxes.</h2>
             <p className="section-intro">
               You should be able to cancel after any milestone and still own something useful.
@@ -347,15 +347,15 @@ export default function App() {
             <li><b>01</b><div><h3>Scope call</h3><p>Free, 30 minutes. We decide together if this is worth building.</p></div></li>
             <li><b>02</b><div><h3>Written plan</h3><p>Approach, milestones, and fixed price or rate before any code.</p></div></li>
             <li><b>03</b><div><h3>Weekly demos</h3><p>You see working software each week, not a status update.</p></div></li>
-            <li><b>04</b><div><h3>Handover</h3><p>Documented, tested, and yours. No lock-in to me.</p></div></li>
+            <li><b>04</b><div><h3>Handover</h3><p>Documented, tested, and yours. No lock-in to Omnivibe.</p></div></li>
           </ol>
         </div>
       </section>
 
       <section className="section channels">
         <div className="container channels-layout">
-          <div><p className="eyebrow">Where the thinking shows up</p><h2>I write the engineering down.</h2></div>
-          <p className="section-intro">The journal below is the same reasoning I bring to client work — architecture trade-offs, reliability patterns, and honest limits. It is the cheapest way to judge how I think before you hire me.</p>
+          <div><p className="eyebrow">Where the thinking shows up</p><h2>We write the engineering down.</h2></div>
+          <p className="section-intro">The journal below is the same reasoning we bring to client work — architecture trade-offs, reliability patterns, and honest limits. It is the cheapest way to judge how Omnivibe thinks before you hire us.</p>
         </div>
         <div className="container channel-list">
           {["Open source", "Journal", "LinkedIn", "Video", "Short-form", "Workshops"].map((channel) => <span key={channel}>{channel}</span>)}
@@ -365,7 +365,7 @@ export default function App() {
       <section className="section journal-section" id="journal">
         <div className="container">
           <p className="eyebrow">Engineering journal</p>
-          <h2>How I think about building this stuff.</h2>
+          <h2>How we think about building this stuff.</h2>
           <p className="section-intro">
             Working notes on data and AI systems: what to build, what to skip, and why.
             Written from delivery experience, not press releases.
@@ -409,7 +409,7 @@ export default function App() {
         <div className="container contact-grid">
           <div>
             <p className="eyebrow">Start a project</p>
-            <h2>Tell me what’s broken.</h2>
+            <h2>Tell us what’s broken.</h2>
             <p className="section-intro">
               No spec required. A paragraph about the problem is enough to start.
               You will get a real reply with a suggested next step — not a sales sequence.

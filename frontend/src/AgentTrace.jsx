@@ -101,7 +101,7 @@ export default function AgentTrace() {
           <div className="demo-cta">
             <p>
               Most agent demos show the answer. The traces, retries, and approval gates are what make
-              one safe to run against your systems — that is the part I build.
+              one safe to run against your systems — that is the part Omnivibe builds.
             </p>
             <a className="button" href="#contact">Talk about an agent build</a>
           </div>

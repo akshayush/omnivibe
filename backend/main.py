@@ -21,7 +21,7 @@ def health() -> dict[str, str]:
 
 @app.get("/api/message")
 def message() -> dict[str, str]:
-    return {"message": "Welcome to your AI education platform."}
+    return {"message": "Welcome to Omnivibe."}
 
 
 class ContactRequest(BaseModel):

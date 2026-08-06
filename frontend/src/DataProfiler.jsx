@@ -189,7 +189,7 @@ export default function DataProfiler() {
 
           <div className="demo-cta">
             <p>
-              This is a scoped-down version of the data quality layer I build into production
+              This is a scoped-down version of the data quality layer we build into production
               pipelines — with alerting, historical drift tracking, and owner routing.
             </p>
             <a className="button" href="#contact">Get this for your data</a>
