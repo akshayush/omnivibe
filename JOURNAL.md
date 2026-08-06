@@ -236,6 +236,12 @@ Wide ASCII diagrams break on mobile. The reader maps named fenced code blocks to
 | `levels` | LLM only / single agent / agentic system cards |
 | `decide` | Decision questions for choosing a layer |
 | `labels` | Think / Act / Coord cards |
+| `single` | One goal / one loop / one tool belt |
+| `multi` | Specialists + orchestrator |
+| `one-enough` | Decision filter before splitting agents |
+| `two-evals` | End-to-end vs contract / step eval layers |
+| `trace` | Plan → act → check → recover → gate |
+| `scorecard` | Five-metric run scorecard |
 
 Aliases: `viz-stack`, `viz-loop`, etc. also work.
 

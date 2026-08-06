@@ -167,6 +167,63 @@ const VISUALS = {
       </div>
     </div>
   ),
+  "two-evals": (
+    <div className="viz viz-levels" role="img" aria-label="Two eval layers: end-to-end outcome and step contracts">
+      <article className="viz-level viz-level-accent">
+        <strong>End-to-end</strong>
+        <ol>
+          <li>Correct final artifact</li>
+          <li>Safe stop condition</li>
+          <li>User job actually done</li>
+        </ol>
+      </article>
+      <article className="viz-level">
+        <strong>Contract / step</strong>
+        <ol>
+          <li>Tool results usable</li>
+          <li>Checks actually ran</li>
+          <li>Handoffs match schema</li>
+        </ol>
+      </article>
+      <article className="viz-level">
+        <strong>Together</strong>
+        <ol>
+          <li>Know if it worked</li>
+          <li>Know where it broke</li>
+          <li>Know what to fix next</li>
+        </ol>
+      </article>
+    </div>
+  ),
+  trace: (
+    <div className="viz viz-trace" role="img" aria-label="Agent trace: plan, act, check, recover, approval gate">
+      <div className="viz-decide-q">Goal → traced run</div>
+      <div className="viz-chip-row">
+        <span className="viz-chip">plan</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip">act</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip">check</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip viz-chip-warn">error → retry</span>
+        <span className="viz-arrow">→</span>
+        <span className="viz-chip viz-chip-done">gate / done</span>
+      </div>
+      <div className="viz-note">every turn: phase · tool · status · evidence</div>
+    </div>
+  ),
+  scorecard: (
+    <div className="viz viz-scorecard" role="img" aria-label="Five-metric agent run scorecard">
+      <div className="viz-decide-q">Run scorecard</div>
+      <div className="viz-score-grid">
+        <div className="viz-score viz-score-good"><span>Task completed</span><strong>to approval gate</strong></div>
+        <div className="viz-score viz-score-good"><span>Claims grounded</span><strong>4 / 4</strong></div>
+        <div className="viz-score viz-score-good"><span>Tool recovery</span><strong>1 / 1</strong></div>
+        <div className="viz-score viz-score-good"><span>Unsafe writes</span><strong>0</strong></div>
+        <div className="viz-score"><span>Wall clock</span><strong>41.2s</strong></div>
+      </div>
+    </div>
+  ),
 };
 
 export function JournalVisual({ type }) {
