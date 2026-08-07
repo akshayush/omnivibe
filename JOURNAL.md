@@ -4,6 +4,8 @@ This document records how the Omnivibe Daily Journal is created, stored, loaded,
 
 There is **no admin UI and no database** for journal posts today. Creating a journal entry means adding a Markdown file, committing it, and deploying `main`.
 
+Automation is supported: GitHub Actions (`.github/workflows/daily-blog.yml`) can generate one new `*.post.md` per day and push it to `main` (or open a review PR). See [`scripts/daily-blog/README.md`](./scripts/daily-blog/README.md).
+
 ---
 
 ## 1. Architecture at a glance
@@ -198,7 +200,25 @@ There is **no “Create journal” screen in the product UI**. Authors create po
 - [ ] Body renders without broken tables / missing visuals
 - [ ] Mobile: open the reader and confirm tables/visuals are readable
 
-### 3.3 Editing / deleting
+### 3.3 Automated daily publishing
+
+| Piece | Role |
+| --- | --- |
+| `scripts/daily-blog/topics.json` | Queue of tech topics (slug, title, excerpt, visual, angles) |
+| `scripts/daily-blog/generate_post.py` | Picks next unused topic; LLM draft if `OPENAI_API_KEY` is set, else outline fallback |
+| `.github/workflows/daily-blog.yml` | Cron `0 7 * * *` UTC + manual `workflow_dispatch` |
+
+Default Action mode **publish** commits the new file to `main` → Vercel deploys → journal card is live. Set `DAILY_BLOG_MODE=pr` (or choose **pr** on a manual run) for a human review gate.
+
+The generator is idempotent: if any `YYYY-MM-DD-*.post.md` already exists for the run date, it skips.
+
+Local preview:
+
+```bash
+python3 scripts/daily-blog/generate_post.py --dry-run --date 2026-08-08
+```
+
+### 3.4 Editing / deleting
 
 | Action | How |
 | --- | --- |

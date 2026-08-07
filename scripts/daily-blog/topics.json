@@ -1,0 +1,362 @@
+[
+  {
+    "slug": "tool-budgets-for-agents",
+    "title": "Give every agent a tool budget before it starts",
+    "excerpt": "Unlimited tool calls look powerful in demos and expensive in production—here is how to set a budget that still ships work.",
+    "visual": "loop",
+    "angles": [
+      "Define max tool calls, wall-clock, and spend before the first act",
+      "Separate cheap reads from expensive writes",
+      "Degrade gracefully when the budget is hit instead of looping forever"
+    ],
+    "try_this": "Pick one live agent run and add hard caps: N tool calls, M seconds, $X. Log when each cap is hit."
+  },
+  {
+    "slug": "human-gates-that-do-not-block",
+    "title": "Human gates that protect without freezing the pipeline",
+    "excerpt": "Approval steps should catch irreversible writes—not every intermediate draft. Design gates that keep throughput.",
+    "visual": "handoff",
+    "angles": [
+      "Gate on irreversible side effects, not on thinking",
+      "Batch approvals with a clear yes/no/revise contract",
+      "Timeouts and escalation paths beat silent waits"
+    ],
+    "try_this": "List your agent’s side effects. Mark which ones need a human. Remove gates from everything else."
+  },
+  {
+    "slug": "context-windows-as-working-memory",
+    "title": "Treat the context window like working memory, not a junk drawer",
+    "excerpt": "Stuffing every ticket into the prompt feels thorough until the model loses the goal. Curate what stays in frame.",
+    "visual": "single",
+    "angles": [
+      "Keep the goal and success criteria pinned at the top",
+      "Summarize history; keep raw sources behind tools",
+      "Evict stale tool noise on purpose"
+    ],
+    "try_this": "For one agent, write a 5-line context policy: always keep, summarize, fetch on demand, never include."
+  },
+  {
+    "slug": "idempotent-agent-writes",
+    "title": "Make agent writes idempotent or do not let them write",
+    "excerpt": "Retries are normal. Duplicate CRM notes and double emails are not. Design writes so a second attempt is safe.",
+    "visual": "loop",
+    "angles": [
+      "Use idempotency keys on every external write",
+      "Prefer upsert over create-blind",
+      "Record write receipts in the trace before claiming success"
+    ],
+    "try_this": "Add an idempotency key to one write path and replay the same run twice. Confirm a single external effect."
+  },
+  {
+    "slug": "retrieval-before-reasoning",
+    "title": "Retrieve first, then reason—not the other way around",
+    "excerpt": "Models invent confidently when evidence is missing. Force a retrieve step before claims that need facts.",
+    "visual": "prompt",
+    "angles": [
+      "Separate “what we know” from “what we infer”",
+      "Fail closed when retrieval returns nothing material",
+      "Cite sources in the artifact, not only in the trace"
+    ],
+    "try_this": "Add a hard rule: no numeric claim without a retrieved source id attached in the draft."
+  },
+  {
+    "slug": "sla-for-agent-latency",
+    "title": "Give your agent an SLA, not vibes about “fast enough”",
+    "excerpt": "Users forgive a slower answer less than a silent hang. Name the latency budget and design for it.",
+    "visual": "scorecard",
+    "angles": [
+      "Publish p50/p95 targets per job type",
+      "Parallelize independent tool calls",
+      "Return a partial useful result when time is nearly gone"
+    ],
+    "try_this": "Measure wall-clock for 20 recent runs. Set a p95 target and add a soft stop at 80% of that budget."
+  },
+  {
+    "slug": "schemas-between-agents",
+    "title": "Schemas between agents beat polite natural language",
+    "excerpt": "Handoffs fail when specialists improvise structure. Contract the payload so the next step can trust it.",
+    "visual": "multi",
+    "angles": [
+      "Define required fields and types for every handoff",
+      "Validate on receive; reject incomplete packets early",
+      "Version the schema when the job changes"
+    ],
+    "try_this": "Write a JSON schema for one agent-to-agent handoff and validate it in the orchestrator before continuing."
+  },
+  {
+    "slug": "observability-for-prompts",
+    "title": "Version prompts like code, observe them like products",
+    "excerpt": "Prompt drift is a silent regression. Treat prompt text as a deployed artifact with owners and diffs.",
+    "visual": "trace",
+    "angles": [
+      "Store prompt templates with version ids in the trace",
+      "A/B only with outcome metrics, not taste tests alone",
+      "Rollback prompts as easily as you rollback code"
+    ],
+    "try_this": "Put today’s system prompt in git with a version tag and log that tag on every run."
+  },
+  {
+    "slug": "fallbacks-when-tools-lie",
+    "title": "Plan for tools that lie, time out, or return empty",
+    "excerpt": "Happy-path agents die in production. Explicit fallbacks turn flaky APIs into recoverable runs.",
+    "visual": "loop",
+    "angles": [
+      "Classify tool errors: retry, degrade, escalate, abort",
+      "Never invent data to paper over an empty response",
+      "Surface the degraded path in the user-facing result"
+    ],
+    "try_this": "Chaos-test one tool: force timeout and empty payload. Confirm the agent chooses a documented fallback."
+  },
+  {
+    "slug": "one-metric-that-matters",
+    "title": "Pick one success metric per agent job",
+    "excerpt": "Dashboards grow; clarity shrinks. One primary outcome metric keeps the loop honest.",
+    "visual": "scorecard",
+    "angles": [
+      "Define done before you define tools",
+      "Secondary metrics explain; they do not redefine success",
+      "Review weekly: did the metric predict user value?"
+    ],
+    "try_this": "Write one sentence: “This agent succeeds when ___.” Put it at the top of the run config."
+  },
+  {
+    "slug": "rag-chunking-without-magic",
+    "title": "Chunk for the question, not for the embedding model’s comfort",
+    "excerpt": "Bad retrieval is usually a chunking problem wearing a model costume. Align chunks to how people ask.",
+    "visual": "decide",
+    "angles": [
+      "Prefer semantic units (procedure, FAQ, policy) over fixed token slices",
+      "Keep enough surrounding context to answer without neighbors",
+      "Evaluate retrieval with real user questions, not synthetic trivia"
+    ],
+    "try_this": "Take 10 failed answers. For each, check whether the right chunk was retrieved before blaming the LLM."
+  },
+  {
+    "slug": "cost-per-successful-outcome",
+    "title": "Track cost per successful outcome, not cost per token",
+    "excerpt": "Cheap tokens that fail still burn money. Price the finished job users care about.",
+    "visual": "scorecard",
+    "angles": [
+      "Attribute spend to completed, aborted, and retried runs",
+      "Compare model tiers on outcome rate, not sticker price",
+      "Cut steps that do not move the success metric"
+    ],
+    "try_this": "For last week’s runs, compute $ per successful outcome. Cut the most expensive non-contributing step."
+  },
+  {
+    "slug": "memory-that-expires",
+    "title": "Long-term memory needs an expiry date",
+    "excerpt": "Agents that remember forever eventually remember the wrong thing. TTL and provenance beat infinite recall.",
+    "visual": "single",
+    "angles": [
+      "Tag memories with source, confidence, and expiry",
+      "Prefer re-fetching volatile facts over caching them",
+      "Let users correct or delete what the agent stored"
+    ],
+    "try_this": "Add TTL + source fields to one memory write path. Purge anything past expiry on read."
+  },
+  {
+    "slug": "eval-sets-from-real-failures",
+    "title": "Grow your eval set from real failures, not imagined ones",
+    "excerpt": "Synthetic evals miss the messy cases production invents. Promote incidents into lasting tests.",
+    "visual": "two-evals",
+    "angles": [
+      "Every production miss becomes a fixture within a week",
+      "Keep fixtures small and labeled by failure mode",
+      "Re-run the suite before every prompt or tool change"
+    ],
+    "try_this": "Take the last three user complaints. Turn each into a scored eval case with a clear pass condition."
+  },
+  {
+    "slug": "streaming-for-trust",
+    "title": "Stream progress so users trust the wait",
+    "excerpt": "A blank spinner feels broken. Show plan, acts, and checks as they happen without dumping raw chain-of-thought.",
+    "visual": "trace",
+    "angles": [
+      "Expose phase labels users understand",
+      "Hide tool secrets; show outcomes",
+      "Allow cancel mid-run with a clean stop"
+    ],
+    "try_this": "Add three user-visible phases to one agent UI: planning, gathering, drafting. Measure abandon rate."
+  },
+  {
+    "slug": "policy-as-code-for-agents",
+    "title": "Write agent policy as code, not as a hope in the prompt",
+    "excerpt": "“Be careful with PII” in a system prompt is not a control. Enforce policy where tools execute.",
+    "visual": "levels",
+    "angles": [
+      "Put allow/deny lists in the tool layer",
+      "Redact before logs leave the boundary",
+      "Fail closed on ambiguous permission"
+    ],
+    "try_this": "Move one safety rule out of the prompt and into a tool-side check that cannot be talked around."
+  },
+  {
+    "slug": "multi-model-routing",
+    "title": "Route models by job shape, not by brand loyalty",
+    "excerpt": "One frontier model for every step is simple and often wasteful. Match model class to task class.",
+    "visual": "decide",
+    "angles": [
+      "Classify steps: extract, plan, write, judge",
+      "Use small models for structured extraction",
+      "Reserve large models for ambiguous reasoning"
+    ],
+    "try_this": "Split one pipeline into extract vs write. Benchmark quality and cost with a smaller model on extract."
+  },
+  {
+    "slug": "structured-outputs-first",
+    "title": "Prefer structured outputs when the next step is a machine",
+    "excerpt": "Prose is for people. Schemas are for the next tool call. Choose the shape that matches the consumer.",
+    "visual": "prompt",
+    "angles": [
+      "Ask for JSON/schema when another system will consume it",
+      "Validate before acting",
+      "Keep a human-readable summary as a separate field"
+    ],
+    "try_this": "Change one agent handoff from free text to a validated object. Count parse failures for a week."
+  },
+  {
+    "slug": "offline-replays",
+    "title": "Replay yesterday’s traces before you change today’s prompt",
+    "excerpt": "Guessing how a prompt change will behave is optional. Replaying recorded traces is not.",
+    "visual": "trace",
+    "angles": [
+      "Store enough of the run to re-score offline",
+      "Diff outcomes across prompt versions",
+      "Block deploys when replay regressions spike"
+    ],
+    "try_this": "Save 25 recent traces. Re-score them against your success metric after the next prompt edit."
+  },
+  {
+    "slug": "agent-ownership",
+    "title": "Every production agent needs a named owner",
+    "excerpt": "Orphan agents rot. Ownership means alerts, evals, and the right to turn the thing off.",
+    "visual": "labels",
+    "angles": [
+      "Assign an on-call for failures and cost spikes",
+      "Document kill switches",
+      "Review weekly: still worth running?"
+    ],
+    "try_this": "Add OWNER and KILL_SWITCH fields to the agent config. Page the owner on success-rate drops."
+  },
+  {
+    "slug": "data-contracts-for-ai-features",
+    "title": "AI features need data contracts too",
+    "excerpt": "Model quality cannot fix silent schema drift upstream. Contract the inputs your agent depends on.",
+    "visual": "decide",
+    "angles": [
+      "Version the fields tools expect",
+      "Alert when required columns go null",
+      "Refuse to run when the contract breaks"
+    ],
+    "try_this": "Write a one-page data contract for your top agent input. Validate it at run start."
+  },
+  {
+    "slug": "less-tools-more-clarity",
+    "title": "Fewer tools usually beat a bigger toolbox",
+    "excerpt": "Every extra tool is another way to wander. Start narrow; add tools when traces demand them.",
+    "visual": "one-enough",
+    "angles": [
+      "List the minimum tools for the success metric",
+      "Remove tools unused in the last 50 successful runs",
+      "Prefer one sharp tool over three vague ones"
+    ],
+    "try_this": "Audit tool usage for one agent. Delete anything unused in successful runs last month."
+  },
+  {
+    "slug": "personalization-with-consent",
+    "title": "Personalize with consent and an off switch",
+    "excerpt": "Remembered preferences help until they feel creepy. Make memory visible, editable, and optional.",
+    "visual": "labels",
+    "angles": [
+      "Show users what you stored about them",
+      "Default to session memory unless they opt in",
+      "Never personalize safety-critical advice from weak signals"
+    ],
+    "try_this": "Add a “what we remember” panel for one flow, with clear delete and opt-out."
+  },
+  {
+    "slug": "batch-vs-realtime-agents",
+    "title": "Not every agent should run in real time",
+    "excerpt": "Some jobs want a chat. Others want a nightly batch with a morning brief. Match the loop to the urgency.",
+    "visual": "levels",
+    "angles": [
+      "Classify jobs by urgency and reversibility",
+      "Batch expensive enrichment overnight",
+      "Keep humans in the morning review, not in the hot path"
+    ],
+    "try_this": "Move one non-urgent agent job to a scheduled batch and measure cost and complaint rate."
+  },
+  {
+    "slug": "guardrails-for-generated-code",
+    "title": "Generated code still needs CI, not vibes",
+    "excerpt": "If an agent writes code, treat it like a junior PR: tests, lint, and a human on risky paths.",
+    "visual": "handoff",
+    "angles": [
+      "Require tests to pass before merge",
+      "Scope write access to a sandbox branch",
+      "Ban direct production deploys from the agent"
+    ],
+    "try_this": "If you have a coding agent, force all changes through CI + PR. Remove any path that skips it."
+  },
+  {
+    "slug": "voice-of-the-system",
+    "title": "Give your product one voice—and make the agent speak it",
+    "excerpt": "Inconsistent tone destroys trust faster than a wrong fact. Encode brand voice as a checkable contract.",
+    "visual": "prompt",
+    "angles": [
+      "Document do/don’t examples for tone",
+      "Score drafts against the voice contract in evals",
+      "Separate facts from tone edits in the pipeline"
+    ],
+    "try_this": "Write ten do/don’t sentence pairs for your brand. Add them as a lightweight tone eval."
+  },
+  {
+    "slug": "incident-runbooks-for-agents",
+    "title": "Write an incident runbook before the agent pages you",
+    "excerpt": "3 a.m. is a bad time to invent a disable procedure. Pre-write how to pause, drain, and explain.",
+    "visual": "trace",
+    "angles": [
+      "Document pause, drain, and rollback steps",
+      "Define customer messaging templates",
+      "Capture postmortems into eval fixtures"
+    ],
+    "try_this": "Draft a one-page runbook: how to disable the agent, what users see, who to notify."
+  },
+  {
+    "slug": "synthetic-users-for-agents",
+    "title": "Test agents with synthetic users that try to break them",
+    "excerpt": "Friendly demos hide adversarial prompts and edge cases. Build synthetic users that push the seams.",
+    "visual": "two-evals",
+    "angles": [
+      "Include jailbreak-ish and confused-user personas",
+      "Score policy adherence separately from helpfulness",
+      "Refresh personas when new abuse shows up"
+    ],
+    "try_this": "Add five adversarial synthetic users to nightly evals. Fail the build on policy regressions."
+  },
+  {
+    "slug": "feature-flags-for-ai",
+    "title": "Ship AI behind flags you can flip in one minute",
+    "excerpt": "Gradual rollout is not optional when the failure mode is confident nonsense. Flags beat hope.",
+    "visual": "decide",
+    "angles": [
+      "Percentage rollouts with kill switches",
+      "Cohort by risk, not only by geography",
+      "Monitor success metric during the ramp"
+    ],
+    "try_this": "Put your newest AI path behind a flag. Practice flipping it off in staging today."
+  },
+  {
+    "slug": "documentation-agents-can-use",
+    "title": "Write docs your agents can actually retrieve",
+    "excerpt": "Human-only wikis with ambiguous titles starve retrieval. Structure docs for both people and tools.",
+    "visual": "stack",
+    "angles": [
+      "One topic per page with explicit titles",
+      "Stable IDs for procedures",
+      "Keep examples next to rules"
+    ],
+    "try_this": "Rewrite one critical runbook with a clear title, steps, and examples. Re-test retrieval hit rate."
+  }
+]
