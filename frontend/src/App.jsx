@@ -5,6 +5,7 @@ import { blogPosts, displayDate } from "./blogPosts";
 import { JournalVisual, isJournalVisual, visualTypeFromLanguage } from "./JournalVisuals";
 import DataProfiler from "./DataProfiler";
 import AgentTrace from "./AgentTrace";
+import HeroVisual from "./HeroVisual";
 import { useReveal } from "./useReveal";
 
 const SERVICES = [
@@ -250,22 +251,14 @@ export default function App() {
 
       <section className="hero" id="top">
         <div className="hero-plane" aria-hidden="true">
-          <div className="hero-grid-lines" />
-          <div className="hero-orb hero-orb-a" />
-          <div className="hero-orb hero-orb-b" />
-          <div className="hero-flow">
-            <span>ingest</span>
-            <span>model</span>
-            <span>decide</span>
-            <span>ship</span>
-          </div>
+          <HeroVisual />
         </div>
+        <div className="hero-scrim" aria-hidden="true" />
         <div className="container hero-copy">
           <p className="hero-brand">Omnivibe</p>
-          <h1>Systems that move data and make decisions.</h1>
+          <h1>Production systems for data and decisions.</h1>
           <p className="lead">
-            We build production pipelines, analytics, LLM apps, and agents — with the tests,
-            traces, and handover that keep them running.
+            Pipelines, analytics, LLM apps, and agents — shipped with tests, traces, and a clean handover.
           </p>
           <div className="action-row">
             <a className="button" href="#playground">See it working</a>
