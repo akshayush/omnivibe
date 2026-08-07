@@ -69,7 +69,7 @@ export default function HeroVisual() {
       <g className="hero-node">
         <rect x="1188" y="500" width="210" height="96" rx="16" fill="#ffffff" stroke="#0b3d38" strokeOpacity="0.18" />
         <text x="1212" y="540" fill="#0a1f1c" fontSize="14" fontFamily="Figtree, sans-serif" fontWeight="700">Decision layer</text>
-        <text x="1212" y="566" fill="#314740" fontSize="13" fontFamily="Figtree, sans-serif">Eval · route · ship</text>
+        <text x="1212" y="566" fill="#314740" fontSize="13" fontFamily="Figtree, sans-serif">Propensity · NBA · personalise</text>
       </g>
 
       <g className="hero-node">

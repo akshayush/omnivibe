@@ -302,6 +302,37 @@ h3 {
   text-decoration: none;
 }
 .text-link span { color: var(--accent); }
+.decisioning-strip {
+  margin-top: 48px;
+  padding: 36px 0 8px;
+  border-top: 1px solid var(--line);
+}
+.decisioning-strip h3 {
+  max-width: 20ch;
+  font-size: clamp(1.55rem, 3vw, 2.2rem);
+}
+.decisioning-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 28px;
+}
+.decisioning-row {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.decisioning-row h4 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.decisioning-row p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 .service-open {
   margin-top: 36px;
   padding: 36px 0 8px;
@@ -894,7 +925,7 @@ footer { border-top: 1px solid rgba(255, 255, 255, 0.1); background: #071c1a; co
 }
 
 @media (max-width: 900px) {
-  .outcome-list, .ship-steps, .journal-list { grid-template-columns: 1fr; }
+  .outcome-list, .ship-steps, .journal-list, .decisioning-list { grid-template-columns: 1fr; }
   .ship-steps li { grid-template-columns: 30px 1fr 16px 1.1fr; }
 }
 

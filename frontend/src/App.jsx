@@ -31,6 +31,16 @@ const SERVICES = [
   },
   {
     number: "03",
+    kicker: "Decisioning & personalization",
+    title: "For teams that need the next right action, not another dashboard",
+    body:
+      "Lead propensity models, next-best-action engines, and hyper-personalised experiences wired into CRM, web, and lifecycle channels. Scored, explainable, and measured against revenue — not model vanity metrics.",
+    terms: "Typical: 4–10 weeks · Fixed scope",
+    cta: "Talk about decisioning",
+    href: "#contact",
+  },
+  {
+    number: "04",
     kicker: "LLM applications",
     title: "For teams sitting on documents and text",
     body:
@@ -40,7 +50,7 @@ const SERVICES = [
     href: "#journal",
   },
   {
-    number: "04",
+    number: "05",
     kicker: "Agentic applications",
     title: "For work that needs tools, not just answers",
     body:
@@ -58,6 +68,21 @@ const OUTCOMES = [
     sector: "Operations",
   },
   {
+    metric: "Lead propensity lift",
+    detail: "Sales-ready scoring that ranked inbound leads by conversion likelihood for a B2B growth team.",
+    sector: "Revenue",
+  },
+  {
+    metric: "Next-best-action in CRM",
+    detail: "Offer and outreach recommendations pushed to sellers with explainable reasons and suppression rules.",
+    sector: "Growth",
+  },
+  {
+    metric: "Hyper-personalised journeys",
+    detail: "Content and offer variants selected per customer segment across email and on-site experiences.",
+    sector: "Marketing",
+  },
+  {
     metric: "One source of truth",
     detail: "Metric rebuild that stopped weekly reporting disputes in a fintech analytics org.",
     sector: "Fintech",
@@ -69,15 +94,31 @@ const OUTCOMES = [
   },
 ];
 
+const DECISIONING = [
+  {
+    title: "Lead propensity models",
+    body: "Score who is likely to convert, churn, or upgrade — with features your team can trust and monitor.",
+  },
+  {
+    title: "Next-best-action engine",
+    body: "Recommend the right offer, channel, or follow-up in CRM and lifecycle tools, with policy and suppression baked in.",
+  },
+  {
+    title: "Hyper-personalisation",
+    body: "Tailor messaging, product surfacing, and journeys from real behaviour — not blunt segment rules alone.",
+  },
+];
+
 const CAPABILITIES = [
   "Python", "SQL", "TypeScript", "React", "FastAPI", "Postgres", "Snowflake", "BigQuery",
-  "dbt", "Airflow", "Spark", "Kafka", "Docker", "AWS", "GCP", "Vercel",
-  "LangGraph", "OpenAI", "Anthropic", "Vector databases", "Evals & tracing", "CI/CD",
+  "dbt", "Airflow", "Spark", "Kafka", "Feature stores", "Propensity models", "Next-best-action",
+  "Personalization", "LangGraph", "OpenAI", "Anthropic", "Evals & tracing", "CI/CD",
 ];
 
 const PROJECT_TYPES = [
   "Analytics & consulting",
   "Data pipelines",
+  "Decisioning & personalization",
   "LLM application",
   "Agentic application",
   "Something else",
@@ -258,7 +299,8 @@ export default function App() {
           <p className="hero-brand">Omnivibe</p>
           <h1>Production systems for data and decisions.</h1>
           <p className="lead">
-            Pipelines, analytics, LLM apps, and agents — shipped with tests, traces, and a clean handover.
+            Pipelines, analytics, decisioning, LLM apps, and agents — from propensity scores to next-best-action,
+            shipped with tests, traces, and a clean handover.
           </p>
           <div className="action-row">
             <a className="button" href="#playground">See it working</a>
@@ -288,7 +330,7 @@ export default function App() {
             <p className="ship-label">How the work ships</p>
             <ol className="ship-steps">
               <li><b>01</b><span>Source data</span><em>→</em><span>Modelled + tested</span></li>
-              <li><b>02</b><span>Tools</span><em>→</em><span>Agent workflow</span></li>
+              <li><b>02</b><span>Scores & actions</span><em>→</em><span>Propensity · NBA · personalise</span></li>
               <li><b>03</b><span>Evaluation</span><em>→</em><span>Ship with confidence</span></li>
             </ol>
           </div>
@@ -298,10 +340,10 @@ export default function App() {
       <section className="section services-section reveal" id="services">
         <div className="container">
           <p className="eyebrow">What we build</p>
-          <h2>Four common starting points. The scope is not the limit.</h2>
+          <h2>Common starting points. The scope is not the limit.</h2>
           <p className="section-intro">
             Most engagements begin as one of these. Many end somewhere else — a migration that
-            became a platform, a dashboard that became a data product.
+            became a platform, a dashboard that became a decisioning engine.
           </p>
 
           <div className="service-list">
@@ -319,13 +361,30 @@ export default function App() {
             ))}
           </div>
 
+          <div className="decisioning-strip" id="decisioning">
+            <p className="card-kicker">Business decisioning</p>
+            <h3>Metrics that change what the business does next.</h3>
+            <p className="section-intro">
+              Beyond reporting: models and engines that rank leads, choose actions, and personalise
+              experiences — instrumented so marketing and sales can see lift, not just accuracy.
+            </p>
+            <div className="decisioning-list">
+              {DECISIONING.map((item) => (
+                <article className="decisioning-row" key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
           <div className="service-open">
             <p className="card-kicker">Open scope</p>
             <h3>Not on this list? That is usually a yes.</h3>
             <p>
               Internal tools, API integrations, cloud migrations, automation, scraping and
-              enrichment, ML deployment, performance rescues, legacy untangling, or an idea
-              that does not have a category yet. Bring the problem, not the spec.
+              enrichment, ML deployment, attribution, experimentation, performance rescues,
+              legacy untangling, or an idea that does not have a category yet. Bring the problem, not the spec.
             </p>
             <a className="button" href="#contact">Describe your problem</a>
           </div>
@@ -401,7 +460,8 @@ export default function App() {
             <h2>A small engineering company, not a slide deck agency.</h2>
             <p className="section-intro">
               Omnivibe is built by practitioners who still write the systems — data platforms,
-              LLM products, and agent workflows that have to survive real operators, not just demos.
+              decisioning engines, LLM products, and agent workflows that have to survive real
+              operators, not just demos.
             </p>
             <p className="studio-copy">
               We keep the team lean on purpose: fewer handoffs, faster feedback, and engineers
