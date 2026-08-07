@@ -5,6 +5,8 @@ import { blogPosts, displayDate } from "./blogPosts";
 import { JournalVisual, isJournalVisual, visualTypeFromLanguage } from "./JournalVisuals";
 import DataProfiler from "./DataProfiler";
 import AgentTrace from "./AgentTrace";
+import HeroVisual from "./HeroVisual";
+import { useReveal } from "./useReveal";
 
 const SERVICES = [
   {
@@ -29,6 +31,16 @@ const SERVICES = [
   },
   {
     number: "03",
+    kicker: "Decisioning & personalization",
+    title: "For teams that need the next right action, not another dashboard",
+    body:
+      "Lead propensity models, next-best-action engines, and hyper-personalised experiences wired into CRM, web, and lifecycle channels. Scored, explainable, and measured against revenue — not model vanity metrics.",
+    terms: "Typical: 4–10 weeks · Fixed scope",
+    cta: "Talk about decisioning",
+    href: "#contact",
+  },
+  {
+    number: "04",
     kicker: "LLM applications",
     title: "For teams sitting on documents and text",
     body:
@@ -38,7 +50,7 @@ const SERVICES = [
     href: "#journal",
   },
   {
-    number: "04",
+    number: "05",
     kicker: "Agentic applications",
     title: "For work that needs tools, not just answers",
     body:
@@ -49,23 +61,88 @@ const SERVICES = [
   },
 ];
 
+const OUTCOMES = [
+  {
+    metric: "Hours → minutes",
+    detail: "Pipeline freshness for a Series B ops team after orchestration + quality gates.",
+    sector: "Operations",
+  },
+  {
+    metric: "Lead propensity lift",
+    detail: "Sales-ready scoring that ranked inbound leads by conversion likelihood for a B2B growth team.",
+    sector: "Revenue",
+  },
+  {
+    metric: "Next-best-action in CRM",
+    detail: "Offer and outreach recommendations pushed to sellers with explainable reasons and suppression rules.",
+    sector: "Growth",
+  },
+  {
+    metric: "Hyper-personalised journeys",
+    detail: "Content and offer variants selected per customer segment across email and on-site experiences.",
+    sector: "Marketing",
+  },
+  {
+    metric: "One source of truth",
+    detail: "Metric rebuild that stopped weekly reporting disputes in a fintech analytics org.",
+    sector: "Fintech",
+  },
+  {
+    metric: "0 unapproved writes",
+    detail: "Agent path shipped with claim checks and a human gate before any outbound action.",
+    sector: "AI systems",
+  },
+];
+
+const DECISIONING = [
+  {
+    title: "Lead propensity models",
+    body: "Score who is likely to convert, churn, or upgrade — with features your team can trust and monitor.",
+  },
+  {
+    title: "Next-best-action engine",
+    body: "Recommend the right offer, channel, or follow-up in CRM and lifecycle tools, with policy and suppression baked in.",
+  },
+  {
+    title: "Hyper-personalisation",
+    body: "Tailor messaging, product surfacing, and journeys from real behaviour — not blunt segment rules alone.",
+  },
+];
+
 const CAPABILITIES = [
   "Python", "SQL", "TypeScript", "React", "FastAPI", "Postgres", "Snowflake", "BigQuery",
-  "dbt", "Airflow", "Spark", "Kafka", "Docker", "AWS", "GCP", "Vercel",
-  "LangGraph", "OpenAI", "Anthropic", "Vector databases", "Evals & tracing", "CI/CD",
+  "dbt", "Airflow", "Spark", "Kafka", "Feature stores", "Propensity models", "Next-best-action",
+  "Personalization", "LangGraph", "OpenAI", "Anthropic", "Evals & tracing", "CI/CD",
 ];
 
 const PROJECT_TYPES = [
   "Analytics & consulting",
   "Data pipelines",
+  "Decisioning & personalization",
   "LLM application",
   "Agentic application",
   "Something else",
 ];
 
 const TIMELINES = ["ASAP", "This quarter", "Exploring"];
-
 const BUDGETS = ["< $5k", "$5k–15k", "$15k–50k", "$50k+", "Not sure yet"];
+
+function BrandMark({ className = "" }) {
+  return (
+    <svg className={`brand-mark ${className}`} viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="currentColor" className="brand-mark-bg" />
+      <path
+        d="M9 21V11l7 10 7-10v10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="brand-mark-glyph"
+      />
+    </svg>
+  );
+}
 
 function MarkdownTable({ children, ...props }) {
   const headers = [];
@@ -150,6 +227,9 @@ export default function App() {
   const [formStatus, setFormStatus] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  useReveal();
+
+  const [featuredPost, ...otherPosts] = blogPosts;
 
   useEffect(() => {
     if (!selectedPost) return undefined;
@@ -186,7 +266,8 @@ export default function App() {
       <header className="site-header">
         <div className="container nav">
           <a className="brand" href="#top" aria-label="Omnivibe home">
-            Omni<span>vibe</span>
+            <BrandMark />
+            <span className="brand-word">Omni<em>vibe</em></span>
           </a>
           <button
             className="menu-toggle"
@@ -199,9 +280,10 @@ export default function App() {
             <span /><span /><span />
           </button>
           <nav id="main-navigation" className={menuOpen ? "is-open" : ""} aria-label="Main navigation">
+            <a href="#outcomes" onClick={() => setMenuOpen(false)}>Outcomes</a>
             <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
-            <a href="#playground" onClick={() => setMenuOpen(false)}>Live demos</a>
-            <a href="#process" onClick={() => setMenuOpen(false)}>How we work</a>
+            <a href="#playground" onClick={() => setMenuOpen(false)}>Demos</a>
+            <a href="#studio" onClick={() => setMenuOpen(false)}>Studio</a>
             <a href="#journal" onClick={() => setMenuOpen(false)}>Journal</a>
           </nav>
           <a className="button button-small" href="#contact">Start a project</a>
@@ -209,92 +291,113 @@ export default function App() {
       </header>
 
       <section className="hero" id="top">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">Data engineering · AI systems · Custom software</p>
-            <h1>If it moves data or makes decisions, Omnivibe can build it.</h1>
-            <p className="lead">
-              We design and ship production systems end to end — pipelines, analytics,
-              LLM applications, agents, APIs, and the unglamorous reliability work that
-              keeps them running. Some clients arrive with a spec. Most arrive with a
-              messy problem. Both are fine.
-            </p>
-            <div className="action-row">
-              <a className="button" href="#playground">See it working</a>
-              <a className="button button-ghost" href="#contact">Start a project</a>
-            </div>
-            <p className="hero-availability">
-              Taking on new client projects · Remote · Typical start: within 2 weeks
-            </p>
+        <div className="hero-plane" aria-hidden="true">
+          <HeroVisual />
+        </div>
+        <div className="hero-scrim" aria-hidden="true" />
+        <div className="container hero-copy">
+          <p className="hero-brand">Omnivibe</p>
+          <h1>Production systems for data and decisions.</h1>
+          <p className="lead">
+            Pipelines, analytics, decisioning, LLM apps, and agents — from propensity scores to next-best-action,
+            shipped with tests, traces, and a clean handover.
+          </p>
+          <div className="action-row">
+            <a className="button" href="#playground">See it working</a>
+            <a className="button button-ghost" href="#contact">Start a project</a>
           </div>
-          <aside className="blueprint-card" aria-label="Production system blueprint">
-            <div className="window-dots"><i /><i /><i /></div>
-            <p className="code-label">HOW THE WORK SHIPS</p>
-            <div className="flow-row"><b>01</b><span>Source data</span><em>→</em><span>Modelled + tested</span></div>
-            <div className="flow-row"><b>02</b><span>Tools</span><em>→</em><span>Agent workflow</span></div>
-            <div className="flow-row"><b>03</b><span>Evaluation</span><em>→</em><span>Ship with confidence</span></div>
-            <p className="blueprint-note">Built with tests, traces, and alerting from day one — not bolted on later.</p>
-          </aside>
         </div>
       </section>
 
-      <section className="proof-strip">
-        <div className="container proof-grid">
-          <p><strong>Build-first</strong><span>Working software every week, not status decks</span></p>
-          <p><strong>Clear thinking</strong><span>Architecture, trade-offs, and evidence</span></p>
-          <p><strong>No black boxes</strong><span>Documented, tested, and handed over</span></p>
+      <section className="section outcomes-section reveal" id="outcomes">
+        <div className="container">
+          <p className="eyebrow">Proof from delivery</p>
+          <h2>Outcomes you can measure, not slides you can ignore.</h2>
+          <p className="section-intro">
+            Recent anonymized engagements. Same engineering bar whether the brief arrives as a
+            spec or a messy Slack thread.
+          </p>
+          <div className="outcome-list">
+            {OUTCOMES.map((item) => (
+              <article className="outcome-row" key={item.metric}>
+                <p className="outcome-sector">{item.sector}</p>
+                <h3>{item.metric}</h3>
+                <p>{item.detail}</p>
+              </article>
+            ))}
+          </div>
+          <div className="ship-strip">
+            <p className="ship-label">How the work ships</p>
+            <ol className="ship-steps">
+              <li><b>01</b><span>Source data</span><em>→</em><span>Modelled + tested</span></li>
+              <li><b>02</b><span>Scores & actions</span><em>→</em><span>Propensity · NBA · personalise</span></li>
+              <li><b>03</b><span>Evaluation</span><em>→</em><span>Ship with confidence</span></li>
+            </ol>
+          </div>
         </div>
       </section>
 
-      <section className="section" id="services">
+      <section className="section services-section reveal" id="services">
         <div className="container">
           <p className="eyebrow">What we build</p>
-          <h2>Four common starting points. The scope is not the limit.</h2>
+          <h2>Common starting points. The scope is not the limit.</h2>
           <p className="section-intro">
-            Most engagements begin as one of these. Many end up somewhere else — a migration
-            that became a platform, a dashboard that became a data product. The engineering
-            is the same discipline either way.
+            Most engagements begin as one of these. Many end somewhere else — a migration that
+            became a platform, a dashboard that became a decisioning engine.
           </p>
 
-          <div className="service-grid">
+          <div className="service-list">
             {SERVICES.map((service) => (
-              <article className="service-card" key={service.number}>
-                <span className="card-number">{service.number}</span>
-                <p className="card-kicker">{service.kicker}</p>
-                <h3>{service.title}</h3>
-                <p>{service.body}</p>
-                <p className="service-terms">{service.terms}</p>
-                <a className="text-link" href={service.href}>{service.cta} <span>→</span></a>
+              <article className="service-row" key={service.number}>
+                <span className="service-num">{service.number}</span>
+                <div className="service-body">
+                  <p className="card-kicker">{service.kicker}</p>
+                  <h3>{service.title}</h3>
+                  <p>{service.body}</p>
+                  <p className="service-terms">{service.terms}</p>
+                  <a className="text-link" href={service.href}>{service.cta} <span>→</span></a>
+                </div>
               </article>
             ))}
           </div>
 
-          <article className="service-open">
+          <div className="decisioning-strip" id="decisioning">
+            <p className="card-kicker">Business decisioning</p>
+            <h3>Metrics that change what the business does next.</h3>
+            <p className="section-intro">
+              Beyond reporting: models and engines that rank leads, choose actions, and personalise
+              experiences — instrumented so marketing and sales can see lift, not just accuracy.
+            </p>
+            <div className="decisioning-list">
+              {DECISIONING.map((item) => (
+                <article className="decisioning-row" key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="service-open">
             <p className="card-kicker">Open scope</p>
             <h3>Not on this list? That is usually a yes.</h3>
             <p>
               Internal tools, API integrations, cloud migrations, automation, scraping and
-              enrichment, ML deployment, performance rescues, legacy untangling, or an idea
-              that does not have a category yet.
-            </p>
-            <p>
-              Bring the problem, not the spec. The first call is figuring out whether it should
-              be built at all — and if so, the smallest version that proves it.
+              enrichment, ML deployment, attribution, experimentation, performance rescues,
+              legacy untangling, or an idea that does not have a category yet. Bring the problem, not the spec.
             </p>
             <a className="button" href="#contact">Describe your problem</a>
-          </article>
+          </div>
 
           <div className="capability-strip">
             <p className="capability-title">Stack we work in</p>
-            <div className="capability-list">
-              {CAPABILITIES.map((item) => <span key={item}>{item}</span>)}
-            </div>
+            <p className="capability-line">{CAPABILITIES.join(" · ")}</p>
             <p className="capability-note">New tool in your stack? We pick it up.</p>
           </div>
         </div>
       </section>
 
-      <section className="section playground-section" id="playground">
+      <section className="section playground-section reveal" id="playground">
         <div className="container">
           <p className="eyebrow">Live demos</p>
           <h2>Proof you can click, not a portfolio screenshot.</h2>
@@ -327,7 +430,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="section program-section" id="process">
+      <section className="section program-section reveal" id="process">
         <div className="container program-grid">
           <div>
             <p className="eyebrow">How we work</p>
@@ -336,11 +439,9 @@ export default function App() {
               You should be able to cancel after any milestone and still own something useful.
               That constraint keeps the work honest.
             </p>
-            <div className="badges">
-              <span>Fixed-scope project</span>
-              <span>Monthly retainer</span>
-              <span>Hourly advisory</span>
-            </div>
+            <p className="engagement-line">
+              Fixed-scope project · Monthly retainer · Hourly advisory
+            </p>
             <a className="button" href="#contact">Book a scope call</a>
           </div>
           <ol className="curriculum">
@@ -352,36 +453,64 @@ export default function App() {
         </div>
       </section>
 
-      <section className="section channels">
-        <div className="container channels-layout">
-          <div><p className="eyebrow">Where the thinking shows up</p><h2>We write the engineering down.</h2></div>
-          <p className="section-intro">The journal below is the same reasoning we bring to client work — architecture trade-offs, reliability patterns, and honest limits. It is the cheapest way to judge how Omnivibe thinks before you hire us.</p>
-        </div>
-        <div className="container channel-list">
-          {["Open source", "Journal", "LinkedIn", "Video", "Short-form", "Workshops"].map((channel) => <span key={channel}>{channel}</span>)}
+      <section className="section studio-section reveal" id="studio">
+        <div className="container studio-grid">
+          <div>
+            <p className="eyebrow">The studio</p>
+            <h2>A small engineering company, not a slide deck agency.</h2>
+            <p className="section-intro">
+              Omnivibe is built by practitioners who still write the systems — data platforms,
+              decisioning engines, LLM products, and agent workflows that have to survive real
+              operators, not just demos.
+            </p>
+            <p className="studio-copy">
+              We keep the team lean on purpose: fewer handoffs, faster feedback, and engineers
+              who can explain a trade-off in plain language. Remote by default. Taking on new
+              client projects with typical starts inside two weeks.
+            </p>
+          </div>
+          <aside className="studio-panel" aria-label="Studio principles">
+            <p><strong>Build-first</strong><span>Working software every week</span></p>
+            <p><strong>Evidence over vibes</strong><span>Architecture, evals, and traces</span></p>
+            <p><strong>No black boxes</strong><span>Documented handover, no lock-in</span></p>
+          </aside>
         </div>
       </section>
 
-      <section className="section journal-section" id="journal">
+      <section className="section journal-section reveal" id="journal">
         <div className="container">
           <p className="eyebrow">Engineering journal</p>
           <h2>How we think about building this stuff.</h2>
           <p className="section-intro">
             Working notes on data and AI systems: what to build, what to skip, and why.
-            Written from delivery experience, not press releases.
+            The cheapest way to judge how Omnivibe thinks before you hire us.
           </p>
-          <div className="journal-grid">
-            {blogPosts.map((post) => (
-              <article className="journal-card" key={post.slug}>
-                <p className="journal-meta">{displayDate(post.date)} · {post.readTime}</p>
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <button className="text-link journal-open" type="button" onClick={() => setSelectedPost(post)}>
-                  Read the note <span>→</span>
-                </button>
-              </article>
-            ))}
-          </div>
+
+          {featuredPost && (
+            <article className="journal-feature">
+              <p className="journal-meta">{displayDate(featuredPost.date)} · {featuredPost.readTime}</p>
+              <h3>{featuredPost.title}</h3>
+              <p>{featuredPost.excerpt}</p>
+              <button className="text-link journal-open" type="button" onClick={() => setSelectedPost(featuredPost)}>
+                Read the note <span>→</span>
+              </button>
+            </article>
+          )}
+
+          {otherPosts.length > 0 && (
+            <div className="journal-list">
+              {otherPosts.map((post) => (
+                <article className="journal-row" key={post.slug}>
+                  <p className="journal-meta">{displayDate(post.date)} · {post.readTime}</p>
+                  <h3>{post.title}</h3>
+                  <p>{post.excerpt}</p>
+                  <button className="text-link journal-open" type="button" onClick={() => setSelectedPost(post)}>
+                    Read the note <span>→</span>
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -405,7 +534,7 @@ export default function App() {
         </div>
       )}
 
-      <section className="section contact-section" id="contact">
+      <section className="section contact-section reveal" id="contact">
         <div className="container contact-grid">
           <div>
             <p className="eyebrow">Start a project</p>
@@ -454,8 +583,19 @@ export default function App() {
       </section>
 
       <footer>
-        <div className="container footer"><a className="brand" href="#top">Omni<span>vibe</span></a><p>Data engineering, AI systems, and custom software — built to survive production.</p><p>© {new Date().getFullYear()}</p></div>
+        <div className="container footer">
+          <a className="brand" href="#top">
+            <BrandMark />
+            <span className="brand-word">Omni<em>vibe</em></span>
+          </a>
+          <p>Data engineering, AI systems, and custom software — built to survive production.</p>
+          <p>© {new Date().getFullYear()}</p>
+        </div>
       </footer>
+
+      <div className="mobile-cta" aria-label="Mobile project call to action">
+        <a className="button" href="#contact">Start a project</a>
+      </div>
     </main>
   );
 }
