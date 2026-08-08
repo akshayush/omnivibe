@@ -71,7 +71,7 @@ Yes. A GitHub Action can create tomorrow’s tech journal entry and push it to `
 1. Merge this repo’s daily-blog workflow (`.github/workflows/daily-blog.yml`).
 2. Optional: add repository secret `OPENAI_API_KEY` for LLM-written posts (without it, outline-based posts still publish from `scripts/daily-blog/topics.json`).
 3. Leave mode at **publish** (default) for hands-free live posts, or set Actions variable `DAILY_BLOG_MODE=pr` if you want a review PR first.
-4. The cron runs daily at **07:00 UTC**. You can also run **Actions → Daily journal post → Run workflow** manually.
+4. The cron runs daily at **08:30 IST** (03:00 UTC). You can also run **Actions → Daily journal post → Run workflow** manually.
 
 Details: [`scripts/daily-blog/README.md`](./scripts/daily-blog/README.md).
 

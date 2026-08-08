@@ -206,7 +206,7 @@ There is **no “Create journal” screen in the product UI**. Authors create po
 | --- | --- |
 | `scripts/daily-blog/topics.json` | Queue of tech topics (slug, title, excerpt, visual, angles) |
 | `scripts/daily-blog/generate_post.py` | Picks next unused topic; LLM draft if `OPENAI_API_KEY` is set, else outline fallback |
-| `.github/workflows/daily-blog.yml` | Cron `0 7 * * *` UTC + manual `workflow_dispatch` |
+| `.github/workflows/daily-blog.yml` | Cron `0 3 * * *` UTC (08:30 IST) + manual `workflow_dispatch` |
 
 Default Action mode **publish** commits the new file to `main` → Vercel deploys → journal card is live. Set `DAILY_BLOG_MODE=pr` (or choose **pr** on a manual run) for a human review gate.
 

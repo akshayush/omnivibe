@@ -16,7 +16,7 @@ python3 scripts/daily-blog/generate_post.py --date 2026-08-08
 
 ## How it goes live
 
-1. GitHub Actions runs on a daily cron (`0 7 * * *` UTC) or via **Actions → Daily journal post → Run workflow**.
+1. GitHub Actions runs on a daily cron (`0 3 * * *` UTC = **08:30 IST**) or via **Actions → Daily journal post → Run workflow**.
 2. `generate_post.py` picks the next unused topic from `topics.json`.
 3. If `OPENAI_API_KEY` is set, it drafts a full post with the LLM. Otherwise it writes a solid outline-based post from the topic angles.
 4. Default mode **publish** commits the `.post.md` file to `main`.
